@@ -17,9 +17,9 @@ public class Main {
         SubTask SubTask1 = new SubTask("SubTask #1-1", "SubTask1 description", TaskStatus.NEW, epicId1);
         SubTask SubTask2 = new SubTask("SubTask #2-1", "SubTask1 description", TaskStatus.NEW, epicId1);
         SubTask SubTask3 = new SubTask("SubTask #3-2", "SubTask1 description", TaskStatus.DONE, epicId2);
-        final Integer SubTaskId1 = manager.addNewSubTask(SubTask1);
-        final Integer SubTaskId2 = manager.addNewSubTask(SubTask2);
-        final Integer SubTaskId3 = manager.addNewSubTask(SubTask3);
+        final int SubTaskId1 = manager.addNewSubTask(SubTask1);
+        final int SubTaskId2 = manager.addNewSubTask(SubTask2);
+        final int SubTaskId3 = manager.addNewSubTask(SubTask3);
 
         printAllTasks(manager);
 
@@ -70,8 +70,10 @@ public class Main {
         // Удаление
         System.out.println("DELETE: Task1");
         manager.deleteTask(taskId1);
-        System.out.println("DELETE: Epic1");
-        manager.deleteEpic(epicId1);
+        System.out.println("DELETE: Epic2");
+        manager.deleteEpic(epicId2);
+        System.out.println("DELETE: SubTask2");
+        manager.deleteSubTask(SubTaskId2);
         printAllTasks(manager);
     }
 
