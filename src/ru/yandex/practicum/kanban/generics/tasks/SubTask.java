@@ -1,3 +1,7 @@
+package ru.yandex.practicum.kanban.generics.tasks;
+
+import ru.yandex.practicum.kanban.constants.TaskStatus;
+
 public class SubTask extends Task{
 
     private int epicId;
@@ -17,7 +21,7 @@ public class SubTask extends Task{
 
     @Override
     public String toString() {
-        return "SubTask{" + '\'' +
+        return "ru.yandex.practicum.kanban.generics.tasks.SubTask{" + '\'' +
                 "name='" + super.getName() + '\'' +
                 ", description='" + super.getDescription() + '\'' +
                 ", status=" + super.getStatus() +

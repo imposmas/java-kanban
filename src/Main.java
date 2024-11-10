@@ -1,22 +1,30 @@
+import ru.yandex.practicum.kanban.constants.TaskStatus;
+import ru.yandex.practicum.kanban.generics.tasks.Epic;
+import ru.yandex.practicum.kanban.generics.tasks.SubTask;
+import ru.yandex.practicum.kanban.generics.tasks.Task;
+import ru.yandex.practicum.kanban.managers.InMemoryTaskManager;
+import ru.yandex.practicum.kanban.managers.TasksManager;
+import ru.yandex.practicum.kanban.utils.ManagersUtils;
+
 public class Main {
     public static void main(String[] args) {
 
-        TasksManager manager = new TasksManager();
+        TasksManager manager = ManagersUtils.getDefault();
 
         // Создание
-        Task task1 = new Task("Task #1", "Task1 description", TaskStatus.NEW);
-        Task task2 = new Task("Task #2", "Task2 description", TaskStatus.IN_PROGRESS);
+        Task task1 = new Task("ru.yandex.practicum.kanban.generics.tasks.Task #1", "Task1 description", TaskStatus.NEW);
+        Task task2 = new Task("ru.yandex.practicum.kanban.generics.tasks.Task #2", "Task2 description", TaskStatus.IN_PROGRESS);
         final int taskId1 = manager.addNewTask(task1);
         final int taskId2 = manager.addNewTask(task2);
 
-        Epic epic1 = new Epic("Epic #1", "Epic1 description");
-        Epic epic2 = new Epic("Epic #2", "Epic2 description");
+        Epic epic1 = new Epic("ru.yandex.practicum.kanban.generics.tasks.Epic #1", "Epic1 description");
+        Epic epic2 = new Epic("ru.yandex.practicum.kanban.generics.tasks.Epic #2", "Epic2 description");
         final int epicId1 = manager.addNewEpic(epic1);
         final int epicId2 = manager.addNewEpic(epic2);
 
-        SubTask SubTask1 = new SubTask("SubTask #1-1", "SubTask1 description", TaskStatus.NEW, epicId1);
-        SubTask SubTask2 = new SubTask("SubTask #2-1", "SubTask1 description", TaskStatus.NEW, epicId1);
-        SubTask SubTask3 = new SubTask("SubTask #3-2", "SubTask1 description", TaskStatus.DONE, epicId2);
+        SubTask SubTask1 = new SubTask("ru.yandex.practicum.kanban.generics.tasks.SubTask #1-1", "SubTask1 description", TaskStatus.NEW, epicId1);
+        SubTask SubTask2 = new SubTask("ru.yandex.practicum.kanban.generics.tasks.SubTask #2-1", "SubTask1 description", TaskStatus.NEW, epicId1);
+        SubTask SubTask3 = new SubTask("ru.yandex.practicum.kanban.generics.tasks.SubTask #3-2", "SubTask1 description", TaskStatus.DONE, epicId2);
         final int SubTaskId1 = manager.addNewSubTask(SubTask1);
         final int SubTaskId2 = manager.addNewSubTask(SubTask2);
         final int SubTaskId3 = manager.addNewSubTask(SubTask3);
@@ -87,5 +95,6 @@ public class Main {
         for (Task t : tasksManager.getEpics()) {
             System.out.println(t);
         }
+
     }
 }
