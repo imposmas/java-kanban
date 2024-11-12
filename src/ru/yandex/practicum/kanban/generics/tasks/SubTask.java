@@ -21,7 +21,7 @@ public class SubTask extends Task{
 
     @Override
     public String toString() {
-        return "ru.yandex.practicum.kanban.generics.tasks.SubTask{" + '\'' +
+        return "SubTask{" + '\'' +
                 "name='" + super.getName() + '\'' +
                 ", description='" + super.getDescription() + '\'' +
                 ", status=" + super.getStatus() +

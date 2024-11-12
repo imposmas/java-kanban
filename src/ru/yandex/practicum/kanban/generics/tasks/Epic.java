@@ -11,6 +11,10 @@ public class Epic extends Task{
         super(name, description);
     }
 
+    public <T extends Task> Epic(T task) {
+        super(task);
+    }
+
     public List<Integer> getSubTasks() {
         return subTasks;
     }
@@ -21,7 +25,7 @@ public class Epic extends Task{
 
     @Override
     public String toString() {
-        return "ru.yandex.practicum.kanban.generics.tasks.Epic{" +
+        return "Epic{" +
                 "name='" + super.getName() + '\'' +
                 ", description='" + super.getDescription() + '\'' +
                 ", status=" + super.getStatus() +

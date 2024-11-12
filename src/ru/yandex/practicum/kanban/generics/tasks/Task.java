@@ -16,6 +16,14 @@ public class Task {
         this.description = description;
     }
 
+    public Task(Task taskCopy) {
+        this.name = taskCopy.name;
+        this.description = taskCopy.description;
+        this.status = taskCopy.status;
+        this.id = taskCopy.id;
+    }
+
+
     public String getName() {
         return name;
     }
@@ -69,11 +77,12 @@ public class Task {
 
     @Override
     public String toString() {
-        return "ru.yandex.practicum.kanban.generics.tasks.Task{" +
+        return "Task{" +
                 "name='" + name + '\'' +
                 ", description='" + description + '\'' +
                 ", status=" + status +
                 ", taskId=" + id +
                 '}';
     }
+
 }
