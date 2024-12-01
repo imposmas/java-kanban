@@ -21,12 +21,12 @@ public class Main {
         final int epicId1 = manager.addNewEpic(epic1);
         final int epicId2 = manager.addNewEpic(epic2);
 
-        SubTask SubTask1 = new SubTask("ru.yandex.practicum.kanban.generics.tasks.SubTask #1-1", "SubTask1 description", TaskStatus.NEW, epicId1);
-        SubTask SubTask2 = new SubTask("ru.yandex.practicum.kanban.generics.tasks.SubTask #2-1", "SubTask1 description", TaskStatus.NEW, epicId1);
-        SubTask SubTask3 = new SubTask("ru.yandex.practicum.kanban.generics.tasks.SubTask #3-2", "SubTask1 description", TaskStatus.DONE, epicId2);
-        final int subTaskId1 = manager.addNewSubTask(SubTask1);
-        final int subTaskId2 = manager.addNewSubTask(SubTask2);
-        final int subTaskId3 = manager.addNewSubTask(SubTask3);
+        SubTask subTask1 = new SubTask("ru.yandex.practicum.kanban.generics.tasks.SubTask #1-1", "SubTask1 description", TaskStatus.NEW, epicId1);
+        SubTask subTask2 = new SubTask("ru.yandex.practicum.kanban.generics.tasks.SubTask #2-1", "SubTask1 description", TaskStatus.NEW, epicId1);
+        SubTask subTask3 = new SubTask("ru.yandex.practicum.kanban.generics.tasks.SubTask #3-2", "SubTask1 description", TaskStatus.DONE, epicId2);
+        final int subTaskId1 = manager.addNewSubTask(subTask1);
+        final int subTaskId2 = manager.addNewSubTask(subTask2);
+        final int subTaskId3 = manager.addNewSubTask(subTask3);
 
         printAllTasks(manager);
 
