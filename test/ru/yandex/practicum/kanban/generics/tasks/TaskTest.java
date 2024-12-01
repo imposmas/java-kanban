@@ -8,7 +8,6 @@ import static org.junit.jupiter.api.Assertions.*;
 class TaskTest {
 
     Task task1 = new Task("ru.yandex.practicum.kanban.generics.tasks.Task #1", "Task1 description", TaskStatus.NEW);
-    Task task2 = new Task("ru.yandex.practicum.kanban.generics.tasks.Task #1", "Task1 description", TaskStatus.NEW);
 
 
     @Test

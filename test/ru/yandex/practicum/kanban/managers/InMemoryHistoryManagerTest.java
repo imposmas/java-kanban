@@ -5,15 +5,12 @@ import org.junit.jupiter.api.Test;
 import ru.yandex.practicum.kanban.constants.TaskStatus;
 import ru.yandex.practicum.kanban.generics.tasks.Task;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 class InMemoryHistoryManagerTest {
 
-    private InMemoryHistoryManager historyManager ;
-    private InMemoryTaskManager taskManager ;
+    private InMemoryHistoryManager historyManager;
+    private InMemoryTaskManager taskManager;
 
     private static Task task1;
     private static Task task2;
@@ -44,32 +41,32 @@ class InMemoryHistoryManagerTest {
     }
 
     @Test
-    void HistoryDoesNotStoreDuplicatesTest(){
+    void HistoryDoesNotStoreDuplicatesTest() {
         historyManager.addToHistory(task);
         historyManager.addToHistory(task);
         assertTrue(historyManager.tasksHistory.size() == 1);
     }
 
     @Test
-    void HistoryNodeContainsRefToFirstNodeTest(){
+    void HistoryNodeContainsRefToFirstNodeTest() {
         historyManager.addToHistory(task1);
-        assertTrue(historyManager.tasksHistory.get(taskId1)==historyManager.first);
+        assertTrue(historyManager.tasksHistory.get(taskId1) == historyManager.first);
     }
 
     @Test
-    void HistoryNodeContainsRefToLastNodeTest(){
+    void HistoryNodeContainsRefToLastNodeTest() {
         historyManager.addToHistory(task1);
         historyManager.addToHistory(task2);
-        assertTrue(historyManager.tasksHistory.get(taskId2)==historyManager.last);
+        assertTrue(historyManager.tasksHistory.get(taskId2) == historyManager.last);
     }
 
     @Test
-    void HistoryNodeRemoveTest(){
+    void HistoryNodeRemoveTest() {
         historyManager.addToHistory(task1);
         historyManager.addToHistory(task2);
-        assertTrue(historyManager.tasksHistory.get(taskId2)==historyManager.last);
+        assertTrue(historyManager.tasksHistory.get(taskId2) == historyManager.last);
         historyManager.remove(taskId2);
-        assertTrue(historyManager.tasksHistory.get(taskId1)==historyManager.last);
+        assertTrue(historyManager.tasksHistory.get(taskId1) == historyManager.last);
     }
 
 }

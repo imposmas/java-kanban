@@ -2,7 +2,7 @@ package ru.yandex.practicum.kanban.generics.tasks;
 
 import ru.yandex.practicum.kanban.constants.TaskStatus;
 
-public class SubTask extends Task{
+public class SubTask extends Task {
 
     private int epicId;
 

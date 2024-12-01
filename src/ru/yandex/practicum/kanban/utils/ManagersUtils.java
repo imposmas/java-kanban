@@ -7,11 +7,11 @@ import ru.yandex.practicum.kanban.managers.TasksManager;
 
 public class ManagersUtils {
 
-    public static TasksManager getDefault(){
+    public static TasksManager getDefault() {
         return new InMemoryTaskManager<>();
     }
 
-    public static HistoryManager getDefaultHistory(){
+    public static HistoryManager getDefaultHistory() {
         return new InMemoryHistoryManager();
     }
 }

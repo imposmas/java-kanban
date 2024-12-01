@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class InMemoryHistoryManager implements HistoryManager{
+public class InMemoryHistoryManager implements HistoryManager {
 
     HashMap<Integer, Node> tasksHistory = new HashMap<>();
     Node first;
@@ -25,9 +25,9 @@ public class InMemoryHistoryManager implements HistoryManager{
     }
 
     @Override
-    public void addToHistory(Task task){
+    public void addToHistory(Task task) {
         Node node = tasksHistory.get(task.getId());
-        if(node != null) {
+        if (node != null) {
             removeNode(node);
         }
         linkLast(task);
@@ -35,7 +35,7 @@ public class InMemoryHistoryManager implements HistoryManager{
 
     @Override
     public void remove(int id) {
-        if(tasksHistory.get(id) != null) {
+        if (tasksHistory.get(id) != null) {
             Node taskToNode = tasksHistory.get(id);
             removeNode(taskToNode);
         }
@@ -56,9 +56,9 @@ public class InMemoryHistoryManager implements HistoryManager{
     private void removeNode(Node node) {
         Node before = node.prev;
         Node after = node.next;
-        if(before == null){
+        if (before == null) {
             first = after;
-        } else if(after == null){
+        } else if (after == null) {
             last = before;
         } else {
             before.next = after;
