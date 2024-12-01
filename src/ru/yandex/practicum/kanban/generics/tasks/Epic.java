@@ -1,5 +1,7 @@
 package ru.yandex.practicum.kanban.generics.tasks;
 
+import ru.yandex.practicum.kanban.constants.TaskStatus;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,8 +13,13 @@ public class Epic extends Task{
         super(name, description);
     }
 
-    public <T extends Task> Epic(T task) {
-        super(task);
+    public Epic(int id, Epic epic) {
+        super(id, epic);
+    }
+
+    public Epic(Epic epic, TaskStatus taskStatus) {
+        super(epic);
+        this.status = taskStatus;
     }
 
     public List<Integer> getSubTasks() {

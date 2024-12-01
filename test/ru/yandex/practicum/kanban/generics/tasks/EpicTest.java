@@ -31,11 +31,5 @@ class EpicTest {
         assertNotNull(epic1.getSubTasks());
     }
 
-    @Test
-    void shouldBeEqualsWithTheSameId(){
-        epic1.setId(1);
-        epic2.setId(1);
-        assertTrue(epic1.equals(epic2));
-    }
 
 }

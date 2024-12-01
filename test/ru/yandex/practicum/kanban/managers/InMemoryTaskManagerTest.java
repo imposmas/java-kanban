@@ -57,9 +57,8 @@ class InMemoryTaskManagerTest {
 
     @Test
     void updateSubtaskAndEpicStatusTest() {
-        SubTask1.setStatus(TaskStatus.IN_PROGRESS);
-        taskManager.updateSubTask(SubTask1);
-        assertEquals(TaskStatus.IN_PROGRESS, epic1.getStatus());
+        taskManager.updateSubTask(new SubTask(taskManager.getSubTask(SubTaskId1), TaskStatus.IN_PROGRESS));
+        assertEquals(TaskStatus.IN_PROGRESS, taskManager.getEpic(epicId1).getStatus());
     }
 
     @Test
@@ -98,11 +97,11 @@ class InMemoryTaskManagerTest {
 
     @Test
     void notPossibleToAddEpicToEpicAsSubtask(){
-        SubTask3.setId(SubTaskId2);
-        SubTask3.setEpicId(SubTaskId2);
-        taskManager.updateSubTask(SubTask3);
+        SubTask SubTask4 = new SubTask(SubTaskId2, SubTask3);
+        SubTask4.setEpicId(SubTaskId2);
+        taskManager.updateSubTask(SubTask4);
         SubTask ExpectedSubTask = taskManager.getSubTask(SubTaskId2);
-        assertTrue(ExpectedSubTask.getEpicId() != SubTask3.getEpicId());
+        assertTrue(ExpectedSubTask.getEpicId() != SubTask4.getEpicId());
     }
 
     @Test
@@ -116,9 +115,20 @@ class InMemoryTaskManagerTest {
     void notPossibleToSetId(){
         Task task3 = new Task("Task #1", "Task1 description", TaskStatus.NEW);
         int inputId = 1000;
-        task3.setId(inputId);
-        int task3id = taskManager.addNewTask(task3);
+        int task3id = taskManager.addNewTask(new Task(inputId, task3));
         assertNotEquals(inputId,task3id);
+    }
+
+    @Test
+    void NotPossibleToDeleteEpicAndSaveSubtaskTest(){
+        taskManager.deleteEpic(epicId1);
+        assertTrue(taskManager.getEpicSubTasks(epicId1).isEmpty());
+    }
+
+    @Test
+    void EpicDoesNotStoreDeletedSubtasks(){
+        taskManager.deleteSubTask(SubTaskId2);
+        assertTrue(!taskManager.getEpicSubTasks(epicId1).contains(SubTaskId2));
     }
 
 }
