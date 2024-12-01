@@ -1,6 +1,5 @@
 package ru.yandex.practicum.kanban.generics.tasks;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import ru.yandex.practicum.kanban.constants.TaskStatus;
 
@@ -11,9 +10,6 @@ class TaskTest {
     Task task1 = new Task("ru.yandex.practicum.kanban.generics.tasks.Task #1", "Task1 description", TaskStatus.NEW);
     Task task2 = new Task("ru.yandex.practicum.kanban.generics.tasks.Task #1", "Task1 description", TaskStatus.NEW);
 
-    @BeforeEach
-    void setUp() {
-    }
 
     @Test
     void getName() {

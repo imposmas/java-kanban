@@ -1,6 +1,5 @@
 package ru.yandex.practicum.kanban.managers;
 
-import ru.yandex.practicum.kanban.generics.tasks.Epic;
 import ru.yandex.practicum.kanban.generics.tasks.Task;
 
 import java.util.ArrayList;
@@ -8,7 +7,7 @@ import java.util.List;
 
 public class InMemoryHistoryManager implements HistoryManager{
 
-    ArrayList<Task> tasksHistory = new ArrayList<>();
+    private ArrayList<Task> tasksHistory = new ArrayList<>();
     private static final int HISTORY_SIZE = 10;
 
     @Override
