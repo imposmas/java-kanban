@@ -49,21 +49,21 @@ class InMemoryHistoryManagerTest {
 
     @Test
     void HistoryNodeContainsRefToFirstNodeTest() {
-        historyManager.addToHistory(task1);
+        historyManager.addToHistory(taskManager.getTask(taskId1));
         assertTrue(historyManager.tasksHistory.get(taskId1) == historyManager.first);
     }
 
     @Test
     void HistoryNodeContainsRefToLastNodeTest() {
-        historyManager.addToHistory(task1);
-        historyManager.addToHistory(task2);
+        historyManager.addToHistory(taskManager.getTask(taskId1));
+        historyManager.addToHistory(taskManager.getTask(taskId2));
         assertTrue(historyManager.tasksHistory.get(taskId2) == historyManager.last);
     }
 
     @Test
     void HistoryNodeRemoveTest() {
-        historyManager.addToHistory(task1);
-        historyManager.addToHistory(task2);
+        historyManager.addToHistory(taskManager.getTask(taskId1));
+        historyManager.addToHistory(taskManager.getTask(taskId2));
         assertTrue(historyManager.tasksHistory.get(taskId2) == historyManager.last);
         historyManager.remove(taskId2);
         assertTrue(historyManager.tasksHistory.get(taskId1) == historyManager.last);
