@@ -2,7 +2,6 @@ import ru.yandex.practicum.kanban.constants.TaskStatus;
 import ru.yandex.practicum.kanban.generics.tasks.Epic;
 import ru.yandex.practicum.kanban.generics.tasks.SubTask;
 import ru.yandex.practicum.kanban.generics.tasks.Task;
-import ru.yandex.practicum.kanban.managers.InMemoryTaskManager;
 import ru.yandex.practicum.kanban.managers.TasksManager;
 import ru.yandex.practicum.kanban.utils.ManagersUtils;
 
@@ -25,9 +24,9 @@ public class Main {
         SubTask SubTask1 = new SubTask("ru.yandex.practicum.kanban.generics.tasks.SubTask #1-1", "SubTask1 description", TaskStatus.NEW, epicId1);
         SubTask SubTask2 = new SubTask("ru.yandex.practicum.kanban.generics.tasks.SubTask #2-1", "SubTask1 description", TaskStatus.NEW, epicId1);
         SubTask SubTask3 = new SubTask("ru.yandex.practicum.kanban.generics.tasks.SubTask #3-2", "SubTask1 description", TaskStatus.DONE, epicId2);
-        final int SubTaskId1 = manager.addNewSubTask(SubTask1);
-        final int SubTaskId2 = manager.addNewSubTask(SubTask2);
-        final int SubTaskId3 = manager.addNewSubTask(SubTask3);
+        final int subTaskId1 = manager.addNewSubTask(SubTask1);
+        final int subTaskId2 = manager.addNewSubTask(SubTask2);
+        final int subTaskId3 = manager.addNewSubTask(SubTask3);
 
         printAllTasks(manager);
 
@@ -41,13 +40,13 @@ public class Main {
             System.out.println(t);
         }
 
-        SubTask SubTask = manager.getSubTask(SubTaskId2);
-        SubTask.setStatus(TaskStatus.DONE);
-        manager.updateSubTask(SubTask);
+        SubTask subTask = manager.getSubTask(subTaskId2);
+        subTask.setStatus(TaskStatus.DONE);
+        manager.updateSubTask(subTask);
         System.out.println("CHANGE STATUS: SubTask2 NEW->DONE");
-        SubTask = manager.getSubTask(SubTaskId3);
-        SubTask.setStatus(TaskStatus.NEW);
-        manager.updateSubTask(SubTask);
+        subTask = manager.getSubTask(subTaskId3);
+        subTask.setStatus(TaskStatus.NEW);
+        manager.updateSubTask(subTask);
         System.out.println("CHANGE STATUS: SubTask3 DONE->NEW");
         System.out.println("Подзадачи:");
         for (Task t : manager.getSubTasks()) {
@@ -81,11 +80,11 @@ public class Main {
         System.out.println("DELETE: Epic2");
         manager.deleteEpic(epicId2);
         System.out.println("DELETE: SubTask2");
-        manager.deleteSubTask(SubTaskId2);
+        manager.deleteSubTask(subTaskId2);
         printAllTasks(manager);
     }
 
-    static void printAllTasks(TasksManager tasksManager){
+    static void printAllTasks(TasksManager tasksManager) {
         for (Task t : tasksManager.getTasks()) {
             System.out.println(t);
         }
