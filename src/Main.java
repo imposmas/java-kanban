@@ -32,20 +32,17 @@ public class Main {
 
         // Обновление
         final Task task = manager.getTask(taskId2);
-        task.setStatus(TaskStatus.DONE);
-        manager.updateTask(task);
+        manager.updateTask(new Task(TaskStatus.DONE, manager.getTask(taskId2)));
         System.out.println("CHANGE STATUS: Task2 IN_PROGRESS->DONE");
         System.out.println("Задачи:");
         for (Task t : manager.getTasks()) {
             System.out.println(t);
         }
 
-        SubTask subTask = manager.getSubTask(subTaskId2);
-        subTask.setStatus(TaskStatus.DONE);
+        SubTask subTask = new SubTask(manager.getSubTask(subTaskId2), TaskStatus.DONE);
         manager.updateSubTask(subTask);
         System.out.println("CHANGE STATUS: SubTask2 NEW->DONE");
-        subTask = manager.getSubTask(subTaskId3);
-        subTask.setStatus(TaskStatus.NEW);
+        subTask = new SubTask(manager.getSubTask(subTaskId3), TaskStatus.NEW);
         manager.updateSubTask(subTask);
         System.out.println("CHANGE STATUS: SubTask3 DONE->NEW");
         System.out.println("Подзадачи:");
@@ -60,8 +57,7 @@ public class Main {
                 System.out.println("--> " + t);
             }
         }
-        final Epic epic = manager.getEpic(epicId1);
-        epic.setStatus(TaskStatus.NEW);
+        final Epic epic = new Epic(manager.getEpic(epicId1), TaskStatus.NEW);
         manager.updateEpic(epic);
         System.out.println("CHANGE STATUS: Epic1 IN_PROGRESS->NEW");
         printAllTasks(manager);

@@ -26,7 +26,7 @@ public class Epic extends Task {
         return subTasks;
     }
 
-    public void setSubTasks(List<Integer> subTasks) {
+    private void setSubTasks(List<Integer> subTasks) {
         this.subTasks = subTasks;
     }
 

@@ -15,10 +15,5 @@ class SubTaskTest {
         assertEquals(1, SubTask1.getEpicId());
     }
 
-    @Test
-    void setEpicId() {
-        SubTask1.setEpicId(2);
-        assertEquals(2, SubTask1.getEpicId());
-    }
 
 }

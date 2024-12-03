@@ -27,11 +27,5 @@ class TaskTest {
         assertEquals(TaskStatus.NEW, task1.getStatus());
     }
 
-    @Test
-    void setStatus() {
-        task1.setStatus(TaskStatus.IN_PROGRESS);
-        assertEquals(TaskStatus.IN_PROGRESS, task1.getStatus());
-    }
-
 
 }

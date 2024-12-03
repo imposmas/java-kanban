@@ -41,32 +41,42 @@ class InMemoryHistoryManagerTest {
     }
 
     @Test
-    void HistoryDoesNotStoreDuplicatesTest() {
+    void historyDoesNotStoreDuplicatesTest() {
         historyManager.addToHistory(task);
         historyManager.addToHistory(task);
-        assertTrue(historyManager.tasksHistory.size() == 1);
+        assertTrue(historyManager.getTasksHistory().size() == 1);
     }
 
     @Test
-    void HistoryNodeContainsRefToFirstNodeTest() {
+    void historyNodeContainsRefToFirstNodeTest() {
         historyManager.addToHistory(taskManager.getTask(taskId1));
-        assertTrue(historyManager.tasksHistory.get(taskId1) == historyManager.first);
+        assertTrue(historyManager.getTasksHistory().get(taskId1) == historyManager.getFirst());
     }
 
     @Test
-    void HistoryNodeContainsRefToLastNodeTest() {
-        historyManager.addToHistory(taskManager.getTask(taskId1));
-        historyManager.addToHistory(taskManager.getTask(taskId2));
-        assertTrue(historyManager.tasksHistory.get(taskId2) == historyManager.last);
-    }
-
-    @Test
-    void HistoryNodeRemoveTest() {
+    void historyNodeContainsRefToLastNodeTest() {
         historyManager.addToHistory(taskManager.getTask(taskId1));
         historyManager.addToHistory(taskManager.getTask(taskId2));
-        assertTrue(historyManager.tasksHistory.get(taskId2) == historyManager.last);
+        assertTrue(historyManager.getTasksHistory().get(taskId2) == historyManager.getLast());
+    }
+
+    @Test
+    void historyNodeRemoveTest() {
+        historyManager.addToHistory(taskManager.getTask(taskId1));
+        historyManager.addToHistory(taskManager.getTask(taskId2));
+        assertTrue(historyManager.getTasksHistory().get(taskId2) == historyManager.getLast());
         historyManager.remove(taskId2);
-        assertTrue(historyManager.tasksHistory.get(taskId1) == historyManager.last);
+        assertTrue(historyManager.getTasksHistory().get(taskId1) == historyManager.getLast());
+    }
+
+    @Test
+    void historyNodeRemoveMiddleNode() {
+        historyManager.addToHistory(taskManager.getTask(taskId1));
+        historyManager.addToHistory(taskManager.getTask(taskId2));
+        historyManager.addToHistory(taskManager.getTask(taskId3));
+        historyManager.remove(taskId2);
+        assertTrue(historyManager.getTasksHistory().get(taskId1) == historyManager.getFirst()
+                && historyManager.getTasksHistory().get(taskId3) == historyManager.getLast());
     }
 
 }

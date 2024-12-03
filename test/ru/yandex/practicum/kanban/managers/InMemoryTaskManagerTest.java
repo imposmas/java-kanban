@@ -22,6 +22,7 @@ class InMemoryTaskManagerTest {
     private static SubTask SubTask2;
     int SubTaskId2;
     private static SubTask SubTask3;
+    int SubTaskId3;
 
     @BeforeEach
     void setUp() {
@@ -35,6 +36,7 @@ class InMemoryTaskManagerTest {
         SubTaskId1 = taskManager.addNewSubTask(SubTask1);
         SubTaskId2 = taskManager.addNewSubTask(SubTask2);
         SubTask3 = new SubTask("ru.yandex.practicum.kanban.generics.tasks.SubTask #3-1", "SubTask1 description", TaskStatus.NEW, epicId1);
+        SubTaskId3 = taskManager.addNewSubTask(SubTask3);
     }
 
     @Test
@@ -50,7 +52,7 @@ class InMemoryTaskManagerTest {
 
     @Test
     void updateTaskStatusTest() {
-        task1.setStatus(TaskStatus.DONE);
+        taskManager.updateTask(new Task(TaskStatus.DONE, taskManager.getTask(taskId1)));
         assertEquals(TaskStatus.DONE, task1.getStatus());
     }
 
@@ -96,11 +98,9 @@ class InMemoryTaskManagerTest {
 
     @Test
     void notPossibleToAddEpicToEpicAsSubtask() {
-        SubTask SubTask4 = new SubTask(SubTaskId2, SubTask3);
-        SubTask4.setEpicId(SubTaskId2);
-        taskManager.updateSubTask(SubTask4);
+        taskManager.updateSubTask(new SubTask(taskManager.getSubTask(SubTaskId3), SubTaskId2));
         SubTask ExpectedSubTask = taskManager.getSubTask(SubTaskId2);
-        assertTrue(ExpectedSubTask.getEpicId() != SubTask4.getEpicId());
+        assertTrue(ExpectedSubTask.getEpicId() != SubTaskId2);
     }
 
     @Test
@@ -119,15 +119,16 @@ class InMemoryTaskManagerTest {
     }
 
     @Test
-    void NotPossibleToDeleteEpicAndSaveSubtaskTest() {
+    void notPossibleToDeleteEpicAndSaveSubtaskTest() {
         taskManager.deleteEpic(epicId1);
         assertTrue(taskManager.getEpicSubTasks(epicId1).isEmpty());
     }
 
     @Test
-    void EpicDoesNotStoreDeletedSubtasks() {
+    void epicDoesNotStoreDeletedSubtasks() {
         taskManager.deleteSubTask(SubTaskId2);
         assertTrue(!taskManager.getEpicSubTasks(epicId1).contains(SubTaskId2));
     }
+
 
 }

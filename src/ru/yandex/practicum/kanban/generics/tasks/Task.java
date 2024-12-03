@@ -30,6 +30,13 @@ public class Task {
         this.id = id;
     }
 
+    public Task(TaskStatus status, Task taskCopy) {
+        this.name = taskCopy.name;
+        this.description = taskCopy.description;
+        this.status = status;
+        this.id = taskCopy.id;
+    }
+
 
     public String getName() {
         return name;
@@ -51,7 +58,7 @@ public class Task {
         return status;
     }
 
-    public void setStatus(TaskStatus status) {
+    private void setStatus(TaskStatus status) {
         this.status = status;
     }
 
