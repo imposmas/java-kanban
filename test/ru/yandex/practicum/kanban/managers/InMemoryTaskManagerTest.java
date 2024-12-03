@@ -53,7 +53,7 @@ class InMemoryTaskManagerTest {
     @Test
     void updateTaskStatusTest() {
         taskManager.updateTask(new Task(TaskStatus.DONE, taskManager.getTask(taskId1)));
-        assertEquals(TaskStatus.DONE, task1.getStatus());
+        assertEquals(TaskStatus.DONE, taskManager.getTask(taskId1).getStatus());
     }
 
     @Test
