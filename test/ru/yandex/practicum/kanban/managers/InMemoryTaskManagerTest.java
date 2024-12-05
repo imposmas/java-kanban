@@ -7,13 +7,11 @@ import ru.yandex.practicum.kanban.generics.tasks.Epic;
 import ru.yandex.practicum.kanban.generics.tasks.SubTask;
 import ru.yandex.practicum.kanban.generics.tasks.Task;
 
-import java.util.List;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 class InMemoryTaskManagerTest {
 
-    private InMemoryTaskManager taskManager ;
+    private InMemoryTaskManager taskManager;
 
     private static Task task1;
     int taskId1;
@@ -24,6 +22,7 @@ class InMemoryTaskManagerTest {
     private static SubTask SubTask2;
     int SubTaskId2;
     private static SubTask SubTask3;
+    int SubTaskId3;
 
     @BeforeEach
     void setUp() {
@@ -37,7 +36,9 @@ class InMemoryTaskManagerTest {
         SubTaskId1 = taskManager.addNewSubTask(SubTask1);
         SubTaskId2 = taskManager.addNewSubTask(SubTask2);
         SubTask3 = new SubTask("ru.yandex.practicum.kanban.generics.tasks.SubTask #3-1", "SubTask1 description", TaskStatus.NEW, epicId1);
+        SubTaskId3 = taskManager.addNewSubTask(SubTask3);
     }
+
     @Test
     void addNewTask() {
         assertNotNull(taskManager.getTask(taskId1));
@@ -51,15 +52,14 @@ class InMemoryTaskManagerTest {
 
     @Test
     void updateTaskStatusTest() {
-        task1.setStatus(TaskStatus.DONE);
-        assertEquals(TaskStatus.DONE, task1.getStatus());
+        taskManager.updateTask(new Task(TaskStatus.DONE, taskManager.getTask(taskId1)));
+        assertEquals(TaskStatus.DONE, taskManager.getTask(taskId1).getStatus());
     }
 
     @Test
     void updateSubtaskAndEpicStatusTest() {
-        SubTask1.setStatus(TaskStatus.IN_PROGRESS);
-        taskManager.updateSubTask(SubTask1);
-        assertEquals(TaskStatus.IN_PROGRESS, epic1.getStatus());
+        taskManager.updateSubTask(new SubTask(taskManager.getSubTask(SubTaskId1), TaskStatus.IN_PROGRESS));
+        assertEquals(TaskStatus.IN_PROGRESS, taskManager.getEpic(epicId1).getStatus());
     }
 
     @Test
@@ -77,7 +77,7 @@ class InMemoryTaskManagerTest {
     @Test
     void deleteSubtaskByIdTest() {
         taskManager.deleteSubTask(SubTaskId1);
-        assertEquals(null,taskManager.getSubTask(SubTaskId1));
+        assertEquals(null, taskManager.getSubTask(SubTaskId1));
     }
 
 
@@ -88,7 +88,7 @@ class InMemoryTaskManagerTest {
     }
 
     @Test
-    void taskIsEqualsAfterAddToManager(){
+    void taskIsEqualsAfterAddToManager() {
         Task task2 = new Task("Task #1", "Task1 description", TaskStatus.NEW);
         taskManager.addNewTask(task2);
         assertTrue(task2.getName().equals("Task #1"));
@@ -97,28 +97,38 @@ class InMemoryTaskManagerTest {
     }
 
     @Test
-    void notPossibleToAddEpicToEpicAsSubtask(){
-        SubTask3.setId(SubTaskId2);
-        SubTask3.setEpicId(SubTaskId2);
-        taskManager.updateSubTask(SubTask3);
+    void notPossibleToAddEpicToEpicAsSubtask() {
+        taskManager.updateSubTask(new SubTask(taskManager.getSubTask(SubTaskId3), SubTaskId2));
         SubTask ExpectedSubTask = taskManager.getSubTask(SubTaskId2);
-        assertTrue(ExpectedSubTask.getEpicId() != SubTask3.getEpicId());
+        assertTrue(ExpectedSubTask.getEpicId() != SubTaskId2);
     }
 
     @Test
-    void notPossibleToAddSubtaskAsEpic(){
+    void notPossibleToAddSubtaskAsEpic() {
         SubTask SubTask3 = new SubTask("SubTask #3-1", "SubTask1 description", TaskStatus.NEW, SubTaskId2);
         Integer SubtaskId3 = taskManager.addNewSubTask(SubTask3);
         assertNull(SubtaskId3);
     }
 
     @Test
-    void notPossibleToSetId(){
+    void notPossibleToSetId() {
         Task task3 = new Task("Task #1", "Task1 description", TaskStatus.NEW);
         int inputId = 1000;
-        task3.setId(inputId);
-        int task3id = taskManager.addNewTask(task3);
-        assertNotEquals(inputId,task3id);
+        int task3id = taskManager.addNewTask(new Task(inputId, task3));
+        assertNotEquals(inputId, task3id);
     }
+
+    @Test
+    void notPossibleToDeleteEpicAndSaveSubtaskTest() {
+        taskManager.deleteEpic(epicId1);
+        assertTrue(taskManager.getEpicSubTasks(epicId1).isEmpty());
+    }
+
+    @Test
+    void epicDoesNotStoreDeletedSubtasks() {
+        taskManager.deleteSubTask(SubTaskId2);
+        assertTrue(!taskManager.getEpicSubTasks(epicId1).contains(SubTaskId2));
+    }
+
 
 }
