@@ -23,12 +23,26 @@ public class Task {
         this.id = taskCopy.id;
     }
 
+    public Task(int id, Task taskCopy) {
+        this.name = taskCopy.name;
+        this.description = taskCopy.description;
+        this.status = taskCopy.status;
+        this.id = id;
+    }
+
+    public Task(TaskStatus status, Task taskCopy) {
+        this.name = taskCopy.name;
+        this.description = taskCopy.description;
+        this.status = status;
+        this.id = taskCopy.id;
+    }
+
 
     public String getName() {
         return name;
     }
 
-    public void setName(String name) {
+    private void setName(String name) {
         this.name = name;
     }
 
@@ -36,7 +50,7 @@ public class Task {
         return description;
     }
 
-    public void setDescription(String description) {
+    private void setDescription(String description) {
         this.description = description;
     }
 
@@ -44,7 +58,7 @@ public class Task {
         return status;
     }
 
-    public void setStatus(TaskStatus status) {
+    private void setStatus(TaskStatus status) {
         this.status = status;
     }
 
@@ -52,7 +66,7 @@ public class Task {
         return id;
     }
 
-    public void setId(int id) {
+    private void setId(int id) {
         this.id = id;
     }
 
@@ -62,12 +76,13 @@ public class Task {
         this.status = status;
     }
 
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Task task = (Task) o;
-        return  Objects.equals(id, task.id) ;
+        return Objects.equals(id, task.id);
     }
 
     @Override

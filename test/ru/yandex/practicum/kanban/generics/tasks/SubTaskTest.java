@@ -1,6 +1,5 @@
 package ru.yandex.practicum.kanban.generics.tasks;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import ru.yandex.practicum.kanban.constants.TaskStatus;
 
@@ -13,13 +12,8 @@ class SubTaskTest {
 
     @Test
     void getEpicId() {
-        assertEquals(1,SubTask1.getEpicId());
+        assertEquals(1, SubTask1.getEpicId());
     }
 
-    @Test
-    void setEpicId() {
-        SubTask1.setEpicId(2);
-        assertEquals(2,SubTask1.getEpicId());
-    }
 
 }
