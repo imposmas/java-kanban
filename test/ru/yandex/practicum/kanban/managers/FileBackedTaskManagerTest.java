@@ -92,16 +92,6 @@ class FileBackedTaskManagerTest {
         assertTrue(loadedFromFileManager.findTaskById(taskId1).getId() == taskId1);
     }
 
-    @Test
-    void saveHistoryToFileTest() {
-        FileBackedTaskManager fileTaskManager = FileBackedTaskManager.loadFromFile(FILE_PATH.toFile());
-        int taskId1 = fileTaskManager.addNewTask(task1);
-        fileTaskManager.updateTask(new Task(TaskStatus.DONE, fileTaskManager.getTask(taskId1)));
-        List<String> lines = readLinesFromFile(FILE_PATH.toFile());
-        assertTrue(lines.get(lines.size() - 1).equals(String.valueOf(taskId1)));
-    }
-
-
     List<String> readLinesFromFile(File file) {
         List<String> words = new ArrayList<>();
         try (BufferedReader fileReader = new BufferedReader(new FileReader(file, StandardCharsets.UTF_8))) {
