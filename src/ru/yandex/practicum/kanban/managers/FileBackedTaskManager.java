@@ -41,7 +41,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager implements TasksM
         } catch (IOException e) {
             System.out.println("Произошла ошибка во время чтения файла.");
         }
-        if (lines.size() <=1 || lines.subList(0, lines.size() - 2).size() <= 1) {
+        if (lines.size() <= 1 || lines.subList(0, lines.size() - 2).size() <= 1) {
             System.out.println("В файле нет задач. Файл будет пересоздан");
             return new FileBackedTaskManager(file);
         } else {

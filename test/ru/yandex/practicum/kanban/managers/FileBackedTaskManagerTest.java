@@ -16,7 +16,8 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class FileBackedTaskManagerTest {
 
@@ -29,16 +30,18 @@ class FileBackedTaskManagerTest {
 
     @BeforeEach
     void deleteGeneratedFile() throws IOException {
-        if(Files.exists(FILE_PATH)){
+        if (Files.exists(FILE_PATH)) {
             Files.delete(FILE_PATH);
-        };
+        }
+        ;
     }
 
     @AfterEach
     void deleteGeneratedFileAfter() throws IOException {
-        if(Files.exists(FILE_PATH)){
+        if (Files.exists(FILE_PATH)) {
             Files.delete(FILE_PATH);
-        };
+        }
+        ;
     }
 
     @Test
@@ -47,7 +50,7 @@ class FileBackedTaskManagerTest {
     }
 
     @Test
-    void loadFromEmptyFileTest(){
+    void loadFromEmptyFileTest() {
         try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(FILE_PATH.toFile(), StandardCharsets.UTF_8))) {
             bufferedWriter.write(FileConstants.CSV_HEADER);
             bufferedWriter.newLine();
@@ -58,7 +61,7 @@ class FileBackedTaskManagerTest {
     }
 
     @Test
-    void saveEmptyFileTest(){
+    void saveEmptyFileTest() {
         FileBackedTaskManager taskManager = FileBackedTaskManager.loadFromFile(FILE_PATH.toFile());
         Task task1 = new Task("ru.yandex.practicum.kanban.generics.tasks.Task #1", "Task1 description", TaskStatus.NEW);
         int taskId1 = taskManager.addNewTask(task1);
@@ -67,7 +70,7 @@ class FileBackedTaskManagerTest {
     }
 
     @Test
-    void saveTasksToFileTest(){
+    void saveTasksToFileTest() {
         FileBackedTaskManager fileTaskManager = FileBackedTaskManager.loadFromFile(FILE_PATH.toFile());
 
         int taskId1 = fileTaskManager.addNewTask(task1);
@@ -76,32 +79,32 @@ class FileBackedTaskManagerTest {
 
         List<String> lines = readLinesFromFile(FILE_PATH.toFile());
         assertTrue(lines.get(0).equals(FileConstants.CSV_HEADER));
-        assertTrue(lines.get(1).substring(0,1).equals(String.valueOf(taskId1)));
-        assertTrue(lines.get(2).substring(0,1).equals(String.valueOf(taskId2)));
-        assertTrue(lines.get(3).substring(0,1).equals(String.valueOf(taskId3)));
+        assertTrue(lines.get(1).substring(0, 1).equals(String.valueOf(taskId1)));
+        assertTrue(lines.get(2).substring(0, 1).equals(String.valueOf(taskId2)));
+        assertTrue(lines.get(3).substring(0, 1).equals(String.valueOf(taskId3)));
     }
 
     @Test
-    void loadTaskFromFile(){
+    void loadTaskFromFile() {
         FileBackedTaskManager fileTaskManager = FileBackedTaskManager.loadFromFile(FILE_PATH.toFile());
 
         int taskId1 = fileTaskManager.addNewTask(task1);
         fileTaskManager.updateTask(new Task(TaskStatus.DONE, fileTaskManager.getTask(taskId1)));
         FileBackedTaskManager loadedFromFileManager = FileBackedTaskManager.loadFromFile(FILE_PATH.toFile());
-        assertTrue(loadedFromFileManager.findTaskById(taskId1).getId()== taskId1 );
+        assertTrue(loadedFromFileManager.findTaskById(taskId1).getId() == taskId1);
     }
 
     @Test
-    void saveHistoryToFileTest(){
+    void saveHistoryToFileTest() {
         FileBackedTaskManager fileTaskManager = FileBackedTaskManager.loadFromFile(FILE_PATH.toFile());
         int taskId1 = fileTaskManager.addNewTask(task1);
         fileTaskManager.updateTask(new Task(TaskStatus.DONE, fileTaskManager.getTask(taskId1)));
         List<String> lines = readLinesFromFile(FILE_PATH.toFile());
-        assertTrue(lines.get(lines.size()-1).equals(String.valueOf(taskId1)));
+        assertTrue(lines.get(lines.size() - 1).equals(String.valueOf(taskId1)));
     }
 
 
-    List<String> readLinesFromFile(File file)  {
+    List<String> readLinesFromFile(File file) {
         List<String> words = new ArrayList<>();
         try (BufferedReader fileReader = new BufferedReader(new FileReader(file, StandardCharsets.UTF_8))) {
             while (fileReader.ready()) {
