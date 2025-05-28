@@ -1,6 +1,5 @@
 package ru.yandex.practicum.kanban.managers;
 
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import ru.yandex.practicum.kanban.constants.FileConstants;
@@ -30,13 +29,6 @@ class FileBackedTaskManagerTest {
 
     @BeforeEach
     void deleteGeneratedFile() throws IOException {
-        if (Files.exists(FILE_PATH)) {
-            Files.delete(FILE_PATH);
-        }
-    }
-
-    @AfterEach
-    void deleteGeneratedFileAfter() throws IOException {
         if (Files.exists(FILE_PATH)) {
             Files.delete(FILE_PATH);
         }
