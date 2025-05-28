@@ -33,7 +33,6 @@ class FileBackedTaskManagerTest {
         if (Files.exists(FILE_PATH)) {
             Files.delete(FILE_PATH);
         }
-        ;
     }
 
     @AfterEach
@@ -41,7 +40,6 @@ class FileBackedTaskManagerTest {
         if (Files.exists(FILE_PATH)) {
             Files.delete(FILE_PATH);
         }
-        ;
     }
 
     @Test
