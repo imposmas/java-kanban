@@ -1,0 +1,7 @@
+id,type,name,status,description,epic
+2,TASK,ru.yandex.practicum.kanban.generics.tasks.Task #2,DONE,Task2 description,
+3,EPIC,ru.yandex.practicum.kanban.generics.tasks.Epic #1,NEW,Epic1 description,
+5,SUBTASK,ru.yandex.practicum.kanban.generics.tasks.SubTask #1-1,NEW,SubTask1 description,3
+
+viewed task's IDs
+2,3

@@ -15,5 +15,4 @@ class SubTaskTest {
         assertEquals(1, SubTask1.getEpicId());
     }
 
-
 }

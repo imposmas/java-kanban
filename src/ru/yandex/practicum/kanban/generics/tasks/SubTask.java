@@ -22,17 +22,25 @@ public class SubTask extends Task {
         this.status = taskStatus;
     }
 
-    public int getEpicId() {
-        return epicId;
+    private SubTask(String name, String description, TaskStatus status, int id, int epicId) {
+        this.name = name;
+        this.description = description;
+        this.status = status;
+        this.id = id;
+        this.epicId = epicId;
     }
 
-    private void setEpicId(int epicId) {
-        this.epicId = epicId;
+    public SubTask() {
+
     }
 
     public SubTask(String name, String description, TaskStatus status, int epicId) {
         super(name, description, status);
         this.epicId = epicId;
+    }
+
+    public int getEpicId() {
+        return epicId;
     }
 
     @Override
@@ -44,5 +52,23 @@ public class SubTask extends Task {
                 ", taskId=" + super.getId() +
                 ", epicId=" + epicId +
                 '}';
+    }
+
+    @Override
+    public String toCSVStringFormat() {
+        StringBuilder csvString = new StringBuilder(super.toCSVStringFormat());
+        csvString.append(getEpicId());
+        return csvString.toString();
+    }
+
+    @Override
+    public SubTask fromCSVStringFormat(String line) {
+        String[] parsedLine = line.split(",");
+        String name = parsedLine[2];
+        String description = parsedLine[4];
+        int id = Integer.parseInt(parsedLine[0]);
+        TaskStatus status = TaskStatus.valueOf(parsedLine[3]);
+        int epicId = Integer.parseInt(parsedLine[5]);
+        return new SubTask(name, description, status, id, epicId);
     }
 }

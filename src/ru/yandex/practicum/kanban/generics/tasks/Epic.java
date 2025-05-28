@@ -9,6 +9,9 @@ public class Epic extends Task {
 
     private List<Integer> subTasks = new ArrayList<>();
 
+    public Epic() {
+    }
+
     public Epic(String name, String description) {
         super(name, description);
     }
@@ -20,6 +23,13 @@ public class Epic extends Task {
     public Epic(Epic epic, TaskStatus taskStatus) {
         super(epic);
         this.status = taskStatus;
+    }
+
+    private Epic(String name, String description, TaskStatus status, int id) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.status = status;
     }
 
     public List<Integer> getSubTasks() {
@@ -39,5 +49,15 @@ public class Epic extends Task {
                 ", taskId=" + super.getId() +
                 ", subtasks=" + subTasks +
                 '}';
+    }
+
+    @Override
+    public Epic fromCSVStringFormat(String line) {
+        String[] parsedLine = line.split(",");
+        String name = parsedLine[2];
+        String description = parsedLine[4];
+        int id = Integer.parseInt(parsedLine[0]);
+        TaskStatus status = TaskStatus.valueOf(parsedLine[3]);
+        return new Epic(name, description, status, id);
     }
 }
