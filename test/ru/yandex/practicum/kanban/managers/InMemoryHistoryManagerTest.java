@@ -5,12 +5,9 @@ import org.junit.jupiter.api.Test;
 import ru.yandex.practicum.kanban.constants.TaskStatus;
 import ru.yandex.practicum.kanban.generics.tasks.Task;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class InMemoryHistoryManagerTest {
-
-    private InMemoryHistoryManager historyManager;
-    private InMemoryTaskManager taskManager;
 
     private static Task task1;
     private static Task task2;
@@ -18,7 +15,8 @@ class InMemoryHistoryManagerTest {
     int taskId1;
     int taskId2;
     int taskId3;
-
+    private InMemoryHistoryManager historyManager;
+    private InMemoryTaskManager taskManager;
     private Task task = new Task("ru.yandex.practicum.kanban.generics.tasks.Task #1", "Task1 description", TaskStatus.NEW);
 
 

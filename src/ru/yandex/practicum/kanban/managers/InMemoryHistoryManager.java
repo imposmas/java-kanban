@@ -56,7 +56,7 @@ public class InMemoryHistoryManager implements HistoryManager {
         final Node l = last;
         final Node newNode = new Node(l, task, null);
         last = newNode;
-        if (l == null) {
+        if (first == null) {
             first = newNode;
         } else {
             l.next = newNode;
@@ -70,6 +70,7 @@ public class InMemoryHistoryManager implements HistoryManager {
         if (before == null) {
             if (after == null) {
                 first = null;
+                last = null;
             } else {
                 first = after;
                 after.prev = before;

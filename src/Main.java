@@ -46,12 +46,12 @@ public class Main {
         manager.updateSubTask(subTask);
         System.out.println("CHANGE STATUS: SubTask3 DONE->NEW");
         System.out.println("Подзадачи:");
-        for (Task t : manager.getSubTasks()) {
+        for (SubTask t : manager.getSubTasks()) {
             System.out.println(t);
         }
 
         System.out.println("Эпики:");
-        for (Task e : manager.getEpics()) {
+        for (Epic e : manager.getEpics()) {
             System.out.println(e);
             for (Task t : manager.getEpicSubTasks(e.getId())) {
                 System.out.println("--> " + t);
@@ -63,7 +63,7 @@ public class Main {
         printAllTasks(manager);
 
         System.out.println("Эпики:");
-        for (Task e : manager.getEpics()) {
+        for (Epic e : manager.getEpics()) {
             System.out.println(e);
             for (Task t : manager.getEpicSubTasks(e.getId())) {
                 System.out.println("--> " + t);
@@ -84,10 +84,10 @@ public class Main {
         for (Task t : tasksManager.getTasks()) {
             System.out.println(t);
         }
-        for (Task t : tasksManager.getSubTasks()) {
+        for (SubTask t : tasksManager.getSubTasks()) {
             System.out.println(t);
         }
-        for (Task t : tasksManager.getEpics()) {
+        for (Epic t : tasksManager.getEpics()) {
             System.out.println(t);
         }
 
