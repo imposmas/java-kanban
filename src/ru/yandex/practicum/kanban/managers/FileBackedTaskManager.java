@@ -39,7 +39,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager implements TasksM
             System.out.println("Файл не найден. Будет создан новый");
             return new FileBackedTaskManager(file);
         } catch (IOException e) {
-            System.out.println("Произошла ошибка во время чтения файла.");
+            throw new FileSaveException("Произошла ошибка во время чтения файла.");
         }
         if (lines.size() <= 1 || lines.subList(0, lines.size() - 2).size() <= 1) {
             System.out.println("В файле нет задач. Файл будет пересоздан");
@@ -59,7 +59,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager implements TasksM
         Map<Integer, Epic> epics = new HashMap<>();
         int synchronizedId = 0;
         for (int i = 0; i < lines.size(); i++) {
-            String[] context = lines.get(i).split(",");
+            String[] context = lines.get(i).split(";");
             int id = Integer.parseInt(context[0]);
 
             if (id > synchronizedId) {
@@ -73,18 +73,17 @@ public class FileBackedTaskManager extends InMemoryTaskManager implements TasksM
                 if (!tasks.keySet().contains(task.getId())) {
                     tasks.put(task.getId(), task);
                 }
-            } else if (taskType.equals("SUBTASK")) {
-                SubTask subTask = new SubTask();
-                subTask = subTask.fromCSVStringFormat(lines.get(i));
-                if (!subTasks.keySet().contains(subTask.getId())) {
-                    subTasks.put(subTask.getId(), subTask);
-                }
             } else if (taskType.equals("EPIC")) {
                 Epic epic = new Epic();
                 epic = epic.fromCSVStringFormat(lines.get(i));
-                if (!epics.keySet().contains(epic.getId())) {
-                    epics.put(epic.getId(), epic);
-                }
+                epics.put(epic.getId(), epic);
+            } else if (taskType.equals("SUBTASK")) {
+                SubTask subTask = new SubTask();
+                subTask = subTask.fromCSVStringFormat(lines.get(i));
+                subTasks.put(subTask.getId(), subTask);
+                Epic epic = epics.get(subTask.getEpicId());
+                epic.getSubTasks().add(id);
+                epics.replace(subTask.getEpicId(), epic);
             }
         }
         return new InMemoryTaskManager(tasks, subTasks, epics, synchronizedId);

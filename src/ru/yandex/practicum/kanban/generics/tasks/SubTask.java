@@ -63,7 +63,7 @@ public class SubTask extends Task {
 
     @Override
     public SubTask fromCSVStringFormat(String line) {
-        String[] parsedLine = line.split(",");
+        String[] parsedLine = line.split(";");
         String name = parsedLine[2];
         String description = parsedLine[4];
         int id = Integer.parseInt(parsedLine[0]);

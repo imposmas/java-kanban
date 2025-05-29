@@ -3,7 +3,7 @@ package ru.yandex.practicum.kanban.generics.tasks;
 import org.junit.jupiter.api.Test;
 import ru.yandex.practicum.kanban.constants.TaskStatus;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class TaskTest {
 

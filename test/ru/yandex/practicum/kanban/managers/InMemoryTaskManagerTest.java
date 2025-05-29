@@ -11,18 +11,17 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class InMemoryTaskManagerTest {
 
-    private InMemoryTaskManager taskManager;
-
     private static Task task1;
-    int taskId1;
     private static Epic epic1;
-    int epicId1;
     private static SubTask SubTask1;
-    int SubTaskId1;
     private static SubTask SubTask2;
-    int SubTaskId2;
     private static SubTask SubTask3;
+    int taskId1;
+    int epicId1;
+    int SubTaskId1;
+    int SubTaskId2;
     int SubTaskId3;
+    private InMemoryTaskManager taskManager;
 
     @BeforeEach
     void setUp() {

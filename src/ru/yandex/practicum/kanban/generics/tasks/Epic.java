@@ -1,5 +1,6 @@
 package ru.yandex.practicum.kanban.generics.tasks;
 
+import ru.yandex.practicum.kanban.constants.FileConstants;
 import ru.yandex.practicum.kanban.constants.TaskStatus;
 
 import java.util.ArrayList;
@@ -22,6 +23,7 @@ public class Epic extends Task {
 
     public Epic(Epic epic, TaskStatus taskStatus) {
         super(epic);
+        this.subTasks = epic.getSubTasks();
         this.status = taskStatus;
     }
 
@@ -47,13 +49,21 @@ public class Epic extends Task {
                 ", description='" + super.getDescription() + '\'' +
                 ", status=" + super.getStatus() +
                 ", taskId=" + super.getId() +
-                ", subtasks=" + subTasks +
+                ", subtasks=" + subTasks.toString() +
                 '}';
     }
 
     @Override
+    public String toCSVStringFormat() {
+        StringBuilder csvString = new StringBuilder(super.toCSVStringFormat());
+        csvString.append(FileConstants.CSV_DELIMITER);
+        csvString.append(getSubTasks().toString());
+        return csvString.toString();
+    }
+
+    @Override
     public Epic fromCSVStringFormat(String line) {
-        String[] parsedLine = line.split(",");
+        String[] parsedLine = line.split(";");
         String name = parsedLine[2];
         String description = parsedLine[4];
         int id = Integer.parseInt(parsedLine[0]);

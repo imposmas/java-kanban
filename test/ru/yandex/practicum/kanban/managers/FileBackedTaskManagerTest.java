@@ -34,11 +34,17 @@ class FileBackedTaskManagerTest {
         }
     }
 
+    /**
+     * new file have to be created if we do not have existing
+     **/
     @Test
     void loadFromFileWithNotExistingFileTest() {
         assertNotNull(FileBackedTaskManager.loadFromFile(FILE_PATH.toFile()));
     }
 
+    /**
+     * new file have to be created if we do not have any tasks in existing file
+     **/
     @Test
     void loadFromEmptyFileTest() {
         try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(FILE_PATH.toFile(), StandardCharsets.UTF_8))) {
@@ -50,6 +56,9 @@ class FileBackedTaskManagerTest {
         assertNotNull(FileBackedTaskManager.loadFromFile(FILE_PATH.toFile()));
     }
 
+    /**
+     * save file without tasks
+     **/
     @Test
     void saveEmptyFileTest() {
         FileBackedTaskManager taskManager = FileBackedTaskManager.loadFromFile(FILE_PATH.toFile());
@@ -59,6 +68,9 @@ class FileBackedTaskManagerTest {
         assertTrue(Files.exists(FILE_PATH));
     }
 
+    /**
+     * added to memory tasks exists in the file
+     **/
     @Test
     void saveTasksToFileTest() {
         FileBackedTaskManager fileTaskManager = FileBackedTaskManager.loadFromFile(FILE_PATH.toFile());
@@ -74,6 +86,20 @@ class FileBackedTaskManagerTest {
         assertTrue(lines.get(3).substring(0, 1).equals(String.valueOf(taskId3)));
     }
 
+    /**
+     * it is possible to load empty file without lines
+     **/
+    @Test
+    void loadNullFromFileTest() throws IOException {
+        File file = new File(FILE_NAME);
+        file.createNewFile();
+        FileBackedTaskManager fileTaskManager = FileBackedTaskManager.loadFromFile(FILE_PATH.toFile());
+        assertNotNull(fileTaskManager);
+    }
+
+    /**
+     * tasks cane be found in memory after loading from file
+     **/
     @Test
     void loadTaskFromFile() {
         FileBackedTaskManager fileTaskManager = FileBackedTaskManager.loadFromFile(FILE_PATH.toFile());
@@ -84,6 +110,9 @@ class FileBackedTaskManagerTest {
         assertTrue(loadedFromFileManager.findTaskById(taskId1).getId() == taskId1);
     }
 
+    /**
+     * internal method to help with files reading
+     **/
     List<String> readLinesFromFile(File file) {
         List<String> words = new ArrayList<>();
         try (BufferedReader fileReader = new BufferedReader(new FileReader(file, StandardCharsets.UTF_8))) {

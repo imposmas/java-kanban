@@ -152,7 +152,10 @@ public class InMemoryTaskManager implements TasksManager {
                 int id = generateUniqueId();
                 SubTask newSubtask = new SubTask(id, subTask);
                 subTasks.put(id, newSubtask);
-                getEpic(subTask.getEpicId()).getSubTasks().add(id);
+                //getEpic(subTask.getEpicId()).getSubTasks().add(id);
+                Epic epic = getEpic(subTask.getEpicId());
+                epic.getSubTasks().add(id);
+                epics.replace(subTask.getEpicId(), epic);
                 calculateEpicStatus(getEpic(subTask.getEpicId()));
                 return id;
             }
@@ -204,6 +207,9 @@ public class InMemoryTaskManager implements TasksManager {
     public void deleteSubTask(int id) {
         int epicId = getSubTask(id).getEpicId();
         if (getEpics().contains(getEpic(epicId))) {
+            Epic epic = getEpic(epicId);
+            epic.getSubTasks().remove(epic.getSubTasks().indexOf(id));
+            epics.replace(epicId, epic);
             historyManager.remove(id);
             subTasks.remove(id);
             calculateEpicStatus(getEpic(epicId));
