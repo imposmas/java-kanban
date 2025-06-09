@@ -11,14 +11,43 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class InMemoryTaskManager<T extends Task> implements TasksManager {
+public class InMemoryTaskManager implements TasksManager {
 
-    private Map<Integer, Task> tasks = new HashMap<>();
-    private Map<Integer, SubTask> subTasks = new HashMap<>();
-    private Map<Integer, Epic> epics = new HashMap<>();
     private static int uniqueId = 0;
-    private HistoryManager historyManager = ManagersUtils.getDefaultHistory();
+    protected Map<Integer, Task> tasks = new HashMap<>();
+    protected Map<Integer, SubTask> subTasks = new HashMap<>();
+    protected Map<Integer, Epic> epics = new HashMap<>();
+    protected HistoryManager historyManager = ManagersUtils.getDefaultHistory();
 
+    public InMemoryTaskManager() {
+    }
+
+    public InMemoryTaskManager(Map<Integer, Task> tasks, Map<Integer, SubTask> subTasks, Map<Integer, Epic> epics, int uniqueId, HistoryManager historyManager) {
+        this.tasks = tasks;
+        this.subTasks = subTasks;
+        this.epics = epics;
+        this.uniqueId = uniqueId;
+        this.historyManager = historyManager;
+    }
+
+    public InMemoryTaskManager(Map<Integer, Task> tasks, Map<Integer, SubTask> subTasks, Map<Integer, Epic> epics, int uniqueId) {
+        this.tasks = tasks;
+        this.subTasks = subTasks;
+        this.epics = epics;
+        this.uniqueId = uniqueId;
+    }
+
+    public Map<Integer, Task> getALlTasks() {
+        return tasks;
+    }
+
+    public Map<Integer, SubTask> getALlSubTasks() {
+        return subTasks;
+    }
+
+    public Map<Integer, Epic> getALlEpics() {
+        return epics;
+    }
 
     @Override
     public List<Task> getTasks() {
@@ -85,6 +114,21 @@ public class InMemoryTaskManager<T extends Task> implements TasksManager {
         return epic;
     }
 
+    public Task findTaskById(int id) {
+        if (tasks.containsKey(id)) {
+            return tasks.get(id);
+        }
+
+        if (subTasks.containsKey(id)) {
+            return subTasks.get(id);
+        }
+
+        if (epics.containsKey(id)) {
+            return epics.get(id);
+        }
+        return null;
+    }
+
     @Override
     public int addNewTask(Task task) {
         int id = generateUniqueId();
@@ -108,7 +152,10 @@ public class InMemoryTaskManager<T extends Task> implements TasksManager {
                 int id = generateUniqueId();
                 SubTask newSubtask = new SubTask(id, subTask);
                 subTasks.put(id, newSubtask);
-                getEpic(subTask.getEpicId()).getSubTasks().add(id);
+                //getEpic(subTask.getEpicId()).getSubTasks().add(id);
+                Epic epic = getEpic(subTask.getEpicId());
+                epic.getSubTasks().add(id);
+                epics.replace(subTask.getEpicId(), epic);
                 calculateEpicStatus(getEpic(subTask.getEpicId()));
                 return id;
             }
@@ -160,6 +207,9 @@ public class InMemoryTaskManager<T extends Task> implements TasksManager {
     public void deleteSubTask(int id) {
         int epicId = getSubTask(id).getEpicId();
         if (getEpics().contains(getEpic(epicId))) {
+            Epic epic = getEpic(epicId);
+            epic.getSubTasks().remove(epic.getSubTasks().indexOf(id));
+            epics.replace(epicId, epic);
             historyManager.remove(id);
             subTasks.remove(id);
             calculateEpicStatus(getEpic(epicId));
@@ -211,8 +261,13 @@ public class InMemoryTaskManager<T extends Task> implements TasksManager {
         return ++uniqueId;
     }
 
+    public int getUniqueId() {
+        return uniqueId;
+    }
+
     private boolean isNotNull(Task task) {
         return task != null;
     }
+
 
 }
