@@ -2,6 +2,8 @@ package ru.yandex.practicum.kanban.generics.tasks;
 
 import ru.yandex.practicum.kanban.constants.TaskStatus;
 
+import java.time.LocalDateTime;
+
 public class SubTask extends Task {
 
     private int epicId;
@@ -22,20 +24,22 @@ public class SubTask extends Task {
         this.status = taskStatus;
     }
 
-    private SubTask(String name, String description, TaskStatus status, int id, int epicId) {
+    private SubTask(String name, String description, TaskStatus status, int id, int epicId, LocalDateTime startTime, int taskDuration) {
         this.name = name;
         this.description = description;
         this.status = status;
         this.id = id;
         this.epicId = epicId;
+        this.startTime = startTime;
+        this.taskDuration = taskDuration;
     }
 
     public SubTask() {
 
     }
 
-    public SubTask(String name, String description, TaskStatus status, int epicId) {
-        super(name, description, status);
+    public SubTask(String name, String description, TaskStatus status, int epicId, LocalDateTime startTime, int taskDuration) {
+        super(name, description, status, startTime, taskDuration);
         this.epicId = epicId;
     }
 
@@ -58,17 +62,19 @@ public class SubTask extends Task {
     public String toCSVStringFormat() {
         StringBuilder csvString = new StringBuilder(super.toCSVStringFormat());
         csvString.append(getEpicId());
-        return csvString.toString();
+        return csvString.toString().replace("null", "");
     }
 
     @Override
     public SubTask fromCSVStringFormat(String line) {
         String[] parsedLine = line.split(";");
-        String name = parsedLine[2];
-        String description = parsedLine[4];
         int id = Integer.parseInt(parsedLine[0]);
+        String name = parsedLine[2];
         TaskStatus status = TaskStatus.valueOf(parsedLine[3]);
-        int epicId = Integer.parseInt(parsedLine[5]);
-        return new SubTask(name, description, status, id, epicId);
+        String description = parsedLine[4];
+        LocalDateTime startTime = LocalDateTime.parse(parsedLine[5]);
+        int taskDuration = Integer.parseInt(parsedLine[6]);
+        int epicId = Integer.parseInt(parsedLine[7]);
+        return new SubTask(name, description, status, id, epicId, startTime, taskDuration);
     }
 }
