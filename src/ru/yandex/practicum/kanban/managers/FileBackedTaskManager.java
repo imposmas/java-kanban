@@ -10,10 +10,7 @@ import ru.yandex.practicum.kanban.utils.ManagersUtils;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class FileBackedTaskManager extends InMemoryTaskManager implements TasksManager {
 
@@ -24,8 +21,8 @@ public class FileBackedTaskManager extends InMemoryTaskManager implements TasksM
     }
 
     public FileBackedTaskManager(Map<Integer, Task> tasks, Map<Integer, SubTask> subTasks, Map<Integer, Epic> epics,
-                                 int uniqueId, File file, HistoryManager historyManager) {
-        super(tasks, subTasks, epics, uniqueId, historyManager);
+                                 int uniqueId, File file, HistoryManager historyManager, TreeSet<Task> prioritizedTasks) {
+        super(tasks, subTasks, epics, uniqueId, historyManager, prioritizedTasks);
         this.file = file;
     }
 
@@ -46,10 +43,12 @@ public class FileBackedTaskManager extends InMemoryTaskManager implements TasksM
             return new FileBackedTaskManager(file);
         } else {
             InMemoryTaskManager inMemoryTaskManager = loadStringsToInMemoryTaskManager(formatTasksLines(lines));
+            inMemoryTaskManager = populatePrioritizedTasks(inMemoryTaskManager);
             HistoryManager historyManager = loadStringToInMemoryHistoryManager(HistoryReaderWriterHelper.fromStringToMemory(formatHistoryLines(lines)), inMemoryTaskManager);
             return new FileBackedTaskManager(inMemoryTaskManager.getALlTasks(),
                     inMemoryTaskManager.getALlSubTasks(),
-                    inMemoryTaskManager.getALlEpics(), inMemoryTaskManager.getUniqueId(), file, historyManager);
+                    inMemoryTaskManager.getALlEpics(), inMemoryTaskManager.getUniqueId(), file,
+                    historyManager, inMemoryTaskManager.getPrioritizedTasks());
         }
     }
 
@@ -102,9 +101,15 @@ public class FileBackedTaskManager extends InMemoryTaskManager implements TasksM
         }
     }
 
+    private static InMemoryTaskManager populatePrioritizedTasks(InMemoryTaskManager inMemoryTaskManager) {
+        inMemoryTaskManager.prioritizedTasks.addAll(inMemoryTaskManager.getTasks());
+        inMemoryTaskManager.prioritizedTasks.addAll(inMemoryTaskManager.getSubTasks());
+        return inMemoryTaskManager;
+    }
+
     public static List<String> formatTasksLines(List<String> lines) {
         lines.removeFirst();
-        return lines.subList(0, lines.size() - 3);
+        return lines.getLast().equals(FileConstants.HISTORY_HEADER) ? lines.subList(0, lines.size() - 2) : lines.subList(0, lines.size() - 3);
     }
 
     public static String formatHistoryLines(List<String> lines) {

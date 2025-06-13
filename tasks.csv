@@ -1,10 +1,8 @@
-id;type;name;status;description;epic;subtasks
-2;TASK;ru.yandex.practicum.kanban.generics.tasks.Task #2;DONE;Task2 description;
-7;TASK;ru.yandex.practicum.kanban.generics.tasks.Task #2;DONE;Task2 description;
-3;EPIC;ru.yandex.practicum.kanban.generics.tasks.Epic #1;NEW;Epic1 description;;[5]
-8;EPIC;ru.yandex.practicum.kanban.generics.tasks.Epic #1;NEW;Epic1 description;;[10]
-5;SUBTASK;ru.yandex.practicum.kanban.generics.tasks.SubTask #1-1;NEW;SubTask1 description;3
-10;SUBTASK;ru.yandex.practicum.kanban.generics.tasks.SubTask #1-1;NEW;SubTask1 description;8
+id;type;name;status;description;startTime;duration;epic;subtasks
+2;TASK;ru.yandex.practicum.kanban.generics.tasks.Task #2;DONE;Task2 description;2025-03-01T07:00;30;
+6;TASK;ru.yandex.practicum.kanban.generics.tasks.Task #1;NEW;Task1 description;2025-03-01T08:00;30;
+3;EPIC;ru.yandex.practicum.kanban.generics.tasks.Epic #1;NEW;Epic1 description;2025-03-01T09:00;30;;[5]
+5;SUBTASK;ru.yandex.practicum.kanban.generics.tasks.SubTask #1-1;NEW;SubTask1 description;2025-03-01T09:00;30;3
 
 viewed task's IDs
-2;3;7;8
+2;3

@@ -5,6 +5,7 @@ import ru.yandex.practicum.kanban.generics.tasks.SubTask;
 import ru.yandex.practicum.kanban.generics.tasks.Task;
 
 import java.util.List;
+import java.util.TreeSet;
 
 public interface TasksManager {
     List<Task> getTasks();
@@ -12,6 +13,8 @@ public interface TasksManager {
     List<SubTask> getSubTasks();
 
     List<Epic> getEpics();
+
+    TreeSet<Task> getPrioritizedTasks();
 
     List<SubTask> getEpicSubTasks(int epicId);
 

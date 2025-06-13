@@ -3,6 +3,7 @@ package ru.yandex.practicum.kanban.generics.tasks;
 import ru.yandex.practicum.kanban.constants.FileConstants;
 import ru.yandex.practicum.kanban.constants.TaskStatus;
 
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 public class Task {
@@ -11,6 +12,8 @@ public class Task {
     protected String description;
     protected TaskStatus status;
     protected int id;
+    protected LocalDateTime startTime;
+    protected int taskDuration;
 
     public Task() {
     }
@@ -25,6 +28,8 @@ public class Task {
         this.description = taskCopy.description;
         this.status = taskCopy.status;
         this.id = taskCopy.id;
+        this.startTime = taskCopy.startTime;
+        this.taskDuration = taskCopy.taskDuration;
     }
 
     public Task(int id, Task taskCopy) {
@@ -32,6 +37,8 @@ public class Task {
         this.description = taskCopy.description;
         this.status = taskCopy.status;
         this.id = id;
+        this.startTime = taskCopy.startTime;
+        this.taskDuration = taskCopy.taskDuration;
     }
 
     public Task(TaskStatus status, Task taskCopy) {
@@ -39,51 +46,53 @@ public class Task {
         this.description = taskCopy.description;
         this.status = status;
         this.id = taskCopy.id;
+        this.startTime = taskCopy.startTime;
+        this.taskDuration = taskCopy.taskDuration;
     }
 
-    public Task(String name, String description, TaskStatus status) {
+    public Task(String name, String description, TaskStatus status, LocalDateTime startTime, int taskDuration) {
         this.name = name;
         this.description = description;
         this.status = status;
+        this.startTime = startTime;
+        this.taskDuration = taskDuration;
     }
 
-    private Task(String name, String description, TaskStatus status, int id) {
+    private Task(String name, String description, TaskStatus status, int id, LocalDateTime startTime, int taskDuration) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.status = status;
+        this.startTime = startTime;
+        this.taskDuration = taskDuration;
     }
 
     public String getName() {
         return name;
     }
 
-    private void setName(String name) {
-        this.name = name;
-    }
-
     public String getDescription() {
         return description;
-    }
-
-    private void setDescription(String description) {
-        this.description = description;
     }
 
     public TaskStatus getStatus() {
         return status;
     }
 
-    private void setStatus(TaskStatus status) {
-        this.status = status;
-    }
-
     public int getId() {
         return id;
     }
 
-    private void setId(int id) {
-        this.id = id;
+    public LocalDateTime getStartTime() {
+        return startTime;
+    }
+
+    public int getTaskDuration() {
+        return taskDuration;
+    }
+
+    public LocalDateTime getEndTime() {
+        return this.startTime.plusMinutes(this.taskDuration);
     }
 
     @Override
@@ -116,7 +125,10 @@ public class Task {
         csvString.append(getName()).append(FileConstants.CSV_DELIMITER);
         csvString.append(getStatus()).append(FileConstants.CSV_DELIMITER);
         csvString.append(getDescription()).append(FileConstants.CSV_DELIMITER);
-        return csvString.toString();
+        csvString.append(getStartTime()).append(FileConstants.CSV_DELIMITER);
+        csvString.append(getTaskDuration()).append(FileConstants.CSV_DELIMITER);
+
+        return csvString.toString().replace("null", "");
     }
 
     protected String getTaskType() {
@@ -125,11 +137,13 @@ public class Task {
 
     public Task fromCSVStringFormat(String line) {
         String[] parsedLine = line.split(";");
-        String name = parsedLine[2];
-        String description = parsedLine[4];
         int id = Integer.parseInt(parsedLine[0]);
+        String name = parsedLine[2];
         TaskStatus status = TaskStatus.valueOf(parsedLine[3]);
-        return new Task(name, description, status, id);
+        String description = parsedLine[4];
+        LocalDateTime startTime = LocalDateTime.parse(parsedLine[5]);
+        int taskDuration = Integer.parseInt(parsedLine[6]);
+        return new Task(name, description, status, id, startTime, taskDuration);
     }
 
 }
