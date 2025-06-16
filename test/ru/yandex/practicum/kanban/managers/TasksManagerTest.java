@@ -8,6 +8,7 @@ import ru.yandex.practicum.kanban.generics.tasks.Epic;
 import ru.yandex.practicum.kanban.generics.tasks.SubTask;
 import ru.yandex.practicum.kanban.generics.tasks.Task;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -24,6 +25,10 @@ class TasksManagerTest<T extends TasksManager> {
     LocalDateTime subTask1StartDate;
     LocalDateTime subTask2StartDate;
     LocalDateTime subTask3StartDate;
+    Duration task1duration;
+    Duration subTask1duration;
+    Duration subTask2duration;
+    Duration subTask3duration;
     int taskId1;
     int epicId1;
     int SubTaskId1;
@@ -34,18 +39,22 @@ class TasksManagerTest<T extends TasksManager> {
     void setUp() {
         taskManager = new InMemoryTaskManager();
         task1StartDate = LocalDateTime.of(2025, 3, 1, 8, 0);
-        task1 = new Task("ru.yandex.practicum.kanban.generics.tasks.Task #1", "Task1 description", TaskStatus.NEW, task1StartDate, 30);
+        task1duration = Duration.ofMinutes(30);
+        task1 = new Task("ru.yandex.practicum.kanban.generics.tasks.Task #1", "Task1 description", TaskStatus.NEW, task1StartDate, task1duration);
         taskId1 = taskManager.addNewTask(task1);
         epic1 = new Epic("ru.yandex.practicum.kanban.generics.tasks.Epic #1", "Epic1 description");
         epicId1 = taskManager.addNewEpic(epic1);
         subTask1StartDate = LocalDateTime.of(2025, 3, 1, 9, 0);
-        SubTask1 = new SubTask("ru.yandex.practicum.kanban.generics.tasks.SubTask #1-1", "SubTask1 description", TaskStatus.NEW, epicId1, subTask1StartDate, 30);
+        subTask1duration = Duration.ofMinutes(30);
+        SubTask1 = new SubTask("ru.yandex.practicum.kanban.generics.tasks.SubTask #1-1", "SubTask1 description", TaskStatus.NEW, epicId1, subTask1StartDate, subTask1duration);
         subTask2StartDate = LocalDateTime.of(2025, 3, 1, 10, 0);
-        SubTask2 = new SubTask("ru.yandex.practicum.kanban.generics.tasks.SubTask #2-1", "SubTask1 description", TaskStatus.NEW, epicId1, subTask2StartDate, 30);
+        subTask2duration = Duration.ofMinutes(30);
+        SubTask2 = new SubTask("ru.yandex.practicum.kanban.generics.tasks.SubTask #2-1", "SubTask1 description", TaskStatus.NEW, epicId1, subTask2StartDate, subTask2duration);
         SubTaskId1 = taskManager.addNewSubTask(SubTask1);
         SubTaskId2 = taskManager.addNewSubTask(SubTask2);
         subTask3StartDate = LocalDateTime.of(2025, 3, 1, 11, 0);
-        SubTask3 = new SubTask("ru.yandex.practicum.kanban.generics.tasks.SubTask #3-1", "SubTask1 description", TaskStatus.NEW, epicId1, subTask3StartDate, 30);
+        subTask3duration = Duration.ofMinutes(30);
+        SubTask3 = new SubTask("ru.yandex.practicum.kanban.generics.tasks.SubTask #3-1", "SubTask1 description", TaskStatus.NEW, epicId1, subTask3StartDate, subTask3duration);
         SubTaskId3 = taskManager.addNewSubTask(SubTask3);
     }
 
@@ -100,7 +109,8 @@ class TasksManagerTest<T extends TasksManager> {
     @Test
     void taskIsEqualsAfterAddToManager() {
         task1StartDate = LocalDateTime.of(2025, 4, 1, 8, 0);
-        Task task2 = new Task("Task #1", "Task1 description", TaskStatus.NEW, task1StartDate, 30);
+        task1duration = Duration.ofMinutes(30);
+        Task task2 = new Task("Task #1", "Task1 description", TaskStatus.NEW, task1StartDate, task1duration);
         taskManager.addNewTask(task2);
         assertTrue(task2.getName().equals("Task #1"));
         assertTrue(task2.getDescription().equals("Task1 description"));
@@ -117,7 +127,8 @@ class TasksManagerTest<T extends TasksManager> {
     @Test
     void notPossibleToAddSubtaskAsEpic() {
         subTask2StartDate = LocalDateTime.of(2025, 3, 1, 10, 0);
-        SubTask SubTask3 = new SubTask("SubTask #3-1", "SubTask1 description", TaskStatus.NEW, SubTaskId2, subTask2StartDate, 30);
+        subTask2duration = Duration.ofMinutes(30);
+        SubTask SubTask3 = new SubTask("SubTask #3-1", "SubTask1 description", TaskStatus.NEW, SubTaskId2, subTask2StartDate, subTask2duration);
         Integer SubtaskId3 = taskManager.addNewSubTask(SubTask3);
         assertNull(SubtaskId3);
     }
@@ -125,7 +136,8 @@ class TasksManagerTest<T extends TasksManager> {
     @Test
     void notPossibleToSetId() {
         task1StartDate = LocalDateTime.of(2025, 9, 1, 8, 0);
-        Task task3 = new Task("Task #1", "Task1 description", TaskStatus.NEW, task1StartDate, 30);
+        task1duration = Duration.ofMinutes(30);
+        Task task3 = new Task("Task #1", "Task1 description", TaskStatus.NEW, task1StartDate, task1duration);
         int inputId = 1000;
         int task3id = taskManager.addNewTask(new Task(inputId, task3));
         assertNotEquals(inputId, task3id);
@@ -180,13 +192,14 @@ class TasksManagerTest<T extends TasksManager> {
 
     @Test
     void epicDurationIsSumOfSubTasksDurations() {
-        assertTrue(SubTask1.getTaskDuration() + SubTask2.getTaskDuration() + SubTask3.getTaskDuration() == taskManager.getEpic(epicId1).getTaskDuration());
+        assertTrue(SubTask1.getTaskDuration().toMinutes() + SubTask2.getTaskDuration().toMinutes() + SubTask3.getTaskDuration().toMinutes() == taskManager.getEpic(epicId1).getTaskDuration().toMinutes());
     }
 
     @Test
     void overlapExceptionTest() {
         LocalDateTime taskStartDate = LocalDateTime.of(2025, 3, 1, 8, 15);
-        Task task4 = new Task("Task #1", "Task1 description", TaskStatus.NEW, taskStartDate, 30);
+        task1duration = Duration.ofMinutes(30);
+        Task task4 = new Task("Task #1", "Task1 description", TaskStatus.NEW, taskStartDate, task1duration);
         assertThrows(OverlapException.class, () -> {
             taskManager.addNewTask(task4);
         }, "Overlapping exists between added and existing tasks");

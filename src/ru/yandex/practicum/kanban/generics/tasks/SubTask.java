@@ -2,6 +2,7 @@ package ru.yandex.practicum.kanban.generics.tasks;
 
 import ru.yandex.practicum.kanban.constants.TaskStatus;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
 
 public class SubTask extends Task {
@@ -24,7 +25,7 @@ public class SubTask extends Task {
         this.status = taskStatus;
     }
 
-    private SubTask(String name, String description, TaskStatus status, int id, int epicId, LocalDateTime startTime, int taskDuration) {
+    private SubTask(String name, String description, TaskStatus status, int id, int epicId, LocalDateTime startTime, Duration taskDuration) {
         this.name = name;
         this.description = description;
         this.status = status;
@@ -38,7 +39,7 @@ public class SubTask extends Task {
 
     }
 
-    public SubTask(String name, String description, TaskStatus status, int epicId, LocalDateTime startTime, int taskDuration) {
+    public SubTask(String name, String description, TaskStatus status, int epicId, LocalDateTime startTime, Duration taskDuration) {
         super(name, description, status, startTime, taskDuration);
         this.epicId = epicId;
     }
@@ -73,7 +74,7 @@ public class SubTask extends Task {
         TaskStatus status = TaskStatus.valueOf(parsedLine[3]);
         String description = parsedLine[4];
         LocalDateTime startTime = LocalDateTime.parse(parsedLine[5]);
-        int taskDuration = Integer.parseInt(parsedLine[6]);
+        Duration taskDuration = Duration.ofMinutes(Integer.parseInt(parsedLine[6]));
         int epicId = Integer.parseInt(parsedLine[7]);
         return new SubTask(name, description, status, id, epicId, startTime, taskDuration);
     }

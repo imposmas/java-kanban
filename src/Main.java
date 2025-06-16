@@ -5,6 +5,7 @@ import ru.yandex.practicum.kanban.generics.tasks.Task;
 import ru.yandex.practicum.kanban.managers.TasksManager;
 import ru.yandex.practicum.kanban.utils.ManagersUtils;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
 
 public class Main {
@@ -14,10 +15,12 @@ public class Main {
 
         // Создание
 
-        LocalDateTime task1StartDate = LocalDateTime.of(2025, 3, 1, 8, 0);
-        Task task1 = new Task("ru.yandex.practicum.kanban.generics.tasks.Task #1", "Task1 description", TaskStatus.NEW, task1StartDate, 30);
-        LocalDateTime task2StartDate = LocalDateTime.of(2025, 3, 1, 7, 0);
-        Task task2 = new Task("ru.yandex.practicum.kanban.generics.tasks.Task #2", "Task2 description", TaskStatus.IN_PROGRESS, task2StartDate, 30);
+        LocalDateTime task1StartDate = LocalDateTime.of(2025, 4, 1, 8, 0);
+        Duration task1duration = Duration.ofMinutes(30);
+        Task task1 = new Task("ru.yandex.practicum.kanban.generics.tasks.Task #1", "Task1 description", TaskStatus.NEW, task1StartDate, task1duration);
+        LocalDateTime task2StartDate = LocalDateTime.of(2025, 4, 1, 7, 0);
+        Duration task2duration = Duration.ofMinutes(30);
+        Task task2 = new Task("ru.yandex.practicum.kanban.generics.tasks.Task #2", "Task2 description", TaskStatus.IN_PROGRESS, task2StartDate, task2duration);
         final int taskId1 = manager.addNewTask(task1);
         final int taskId2 = manager.addNewTask(task2);
 
@@ -28,12 +31,15 @@ public class Main {
         final int epicId2 = manager.addNewEpic(epic2);
 
 
-        LocalDateTime subTask1StartDate = LocalDateTime.of(2025, 3, 1, 9, 0);
-        SubTask subTask1 = new SubTask("ru.yandex.practicum.kanban.generics.tasks.SubTask #1-1", "SubTask1 description", TaskStatus.NEW, epicId1, subTask1StartDate, 30);
-        LocalDateTime subTask2StartDate = LocalDateTime.of(2025, 3, 1, 10, 0);
-        SubTask subTask2 = new SubTask("ru.yandex.practicum.kanban.generics.tasks.SubTask #2-1", "SubTask1 description", TaskStatus.NEW, epicId1, subTask2StartDate, 30);
-        LocalDateTime subTask3StartDate = LocalDateTime.of(2025, 3, 1, 11, 0);
-        SubTask subTask3 = new SubTask("ru.yandex.practicum.kanban.generics.tasks.SubTask #3-2", "SubTask1 description", TaskStatus.DONE, epicId2, subTask3StartDate, 30);
+        LocalDateTime subTask1StartDate = LocalDateTime.of(2025, 5, 1, 9, 0);
+        Duration subTask1duration = Duration.ofMinutes(30);
+        SubTask subTask1 = new SubTask("ru.yandex.practicum.kanban.generics.tasks.SubTask #1-1", "SubTask1 description", TaskStatus.NEW, epicId1, subTask1StartDate, subTask1duration);
+        LocalDateTime subTask2StartDate = LocalDateTime.of(2025, 4, 1, 10, 0);
+        Duration subTask2duration = Duration.ofMinutes(30);
+        SubTask subTask2 = new SubTask("ru.yandex.practicum.kanban.generics.tasks.SubTask #2-1", "SubTask1 description", TaskStatus.NEW, epicId1, subTask2StartDate, subTask2duration);
+        LocalDateTime subTask3StartDate = LocalDateTime.of(2025, 4, 1, 11, 0);
+        Duration subTask3duration = Duration.ofMinutes(30);
+        SubTask subTask3 = new SubTask("ru.yandex.practicum.kanban.generics.tasks.SubTask #3-2", "SubTask1 description", TaskStatus.DONE, epicId2, subTask3StartDate, subTask3duration);
         final int subTaskId1 = manager.addNewSubTask(subTask1);
         final int subTaskId2 = manager.addNewSubTask(subTask2);
         final int subTaskId3 = manager.addNewSubTask(subTask3);

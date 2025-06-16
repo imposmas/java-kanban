@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import ru.yandex.practicum.kanban.constants.TaskStatus;
 import ru.yandex.practicum.kanban.generics.tasks.Task;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -19,8 +20,9 @@ class InMemoryHistoryManagerTest {
     int taskId2;
     int taskId3;
     LocalDateTime taskStartDate = LocalDateTime.of(2025, 7, 1, 8, 0);
+    Duration taskDuration = Duration.ofMinutes(30);
     private InMemoryHistoryManager historyManager;
-    private Task task = new Task("ru.yandex.practicum.kanban.generics.tasks.Task #1", "Task1 description", TaskStatus.NEW, taskStartDate, 30);
+    private Task task = new Task("ru.yandex.practicum.kanban.generics.tasks.Task #1", "Task1 description", TaskStatus.NEW, taskStartDate, taskDuration);
 
 
     @BeforeEach
@@ -28,11 +30,14 @@ class InMemoryHistoryManagerTest {
         historyManager = new InMemoryHistoryManager();
         taskManager = new InMemoryTaskManager();
         LocalDateTime task1StartDate = LocalDateTime.of(2025, 3, 1, 8, 0);
-        Task task1 = new Task("ru.yandex.practicum.kanban.generics.tasks.Task #1", "Task1 description", TaskStatus.NEW, task1StartDate, 30);
+        Duration task1duration = Duration.ofMinutes(30);
+        Task task1 = new Task("ru.yandex.practicum.kanban.generics.tasks.Task #1", "Task1 description", TaskStatus.NEW, task1StartDate, task1duration);
         LocalDateTime task2StartDate = LocalDateTime.of(2025, 3, 1, 7, 0);
-        Task task2 = new Task("ru.yandex.practicum.kanban.generics.tasks.Task #2", "Task2 description", TaskStatus.NEW, task2StartDate, 30);
+        Duration task2duration = Duration.ofMinutes(30);
+        Task task2 = new Task("ru.yandex.practicum.kanban.generics.tasks.Task #2", "Task2 description", TaskStatus.NEW, task2StartDate, task2duration);
         LocalDateTime task3StartDate = LocalDateTime.of(2025, 3, 2, 7, 0);
-        Task task3 = new Task("ru.yandex.practicum.kanban.generics.tasks.Task #3", "Task3 description", TaskStatus.NEW, task3StartDate, 30);
+        Duration task3duration = Duration.ofMinutes(30);
+        Task task3 = new Task("ru.yandex.practicum.kanban.generics.tasks.Task #3", "Task3 description", TaskStatus.NEW, task3StartDate, task3duration);
 
         taskId1 = taskManager.addNewTask(task1);
         taskId2 = taskManager.addNewTask(task2);

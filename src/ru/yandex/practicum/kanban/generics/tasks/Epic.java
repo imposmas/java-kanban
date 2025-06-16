@@ -3,6 +3,7 @@ package ru.yandex.practicum.kanban.generics.tasks;
 import ru.yandex.practicum.kanban.constants.FileConstants;
 import ru.yandex.practicum.kanban.constants.TaskStatus;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -28,7 +29,7 @@ public class Epic extends Task {
         this.status = taskStatus;
     }
 
-    private Epic(String name, String description, TaskStatus status, int id, LocalDateTime epicStartTime, int epicDuration) {
+    private Epic(String name, String description, TaskStatus status, int id, LocalDateTime epicStartTime, Duration epicDuration) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -37,7 +38,7 @@ public class Epic extends Task {
         this.taskDuration = epicDuration;
     }
 
-    public Epic(Epic epic, LocalDateTime epicStartTime, int epicDuration) {
+    public Epic(Epic epic, LocalDateTime epicStartTime, Duration epicDuration) {
         super(epic);
         this.subTasks = epic.getSubTasks();
         this.status = epic.getStatus();
@@ -77,7 +78,7 @@ public class Epic extends Task {
         TaskStatus status = TaskStatus.valueOf(parsedLine[3]);
         String description = parsedLine[4];
         LocalDateTime startTime = LocalDateTime.parse(parsedLine[5]);
-        int taskDuration = Integer.parseInt(parsedLine[6]);
+        Duration taskDuration = Duration.ofMinutes(Long.parseLong(parsedLine[6]));
         return new Epic(name, description, status, id, startTime, taskDuration);
     }
 }

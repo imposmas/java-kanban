@@ -3,6 +3,7 @@ package ru.yandex.practicum.kanban.generics.tasks;
 import ru.yandex.practicum.kanban.constants.FileConstants;
 import ru.yandex.practicum.kanban.constants.TaskStatus;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
@@ -13,7 +14,7 @@ public class Task {
     protected TaskStatus status;
     protected int id;
     protected LocalDateTime startTime;
-    protected int taskDuration;
+    protected Duration taskDuration;
 
     public Task() {
     }
@@ -50,7 +51,7 @@ public class Task {
         this.taskDuration = taskCopy.taskDuration;
     }
 
-    public Task(String name, String description, TaskStatus status, LocalDateTime startTime, int taskDuration) {
+    public Task(String name, String description, TaskStatus status, LocalDateTime startTime, Duration taskDuration) {
         this.name = name;
         this.description = description;
         this.status = status;
@@ -58,7 +59,7 @@ public class Task {
         this.taskDuration = taskDuration;
     }
 
-    private Task(String name, String description, TaskStatus status, int id, LocalDateTime startTime, int taskDuration) {
+    private Task(String name, String description, TaskStatus status, int id, LocalDateTime startTime, Duration taskDuration) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -87,12 +88,12 @@ public class Task {
         return startTime;
     }
 
-    public int getTaskDuration() {
+    public Duration getTaskDuration() {
         return taskDuration;
     }
 
     public LocalDateTime getEndTime() {
-        return this.startTime.plusMinutes(this.taskDuration);
+        return this.startTime.plusMinutes(this.taskDuration.toMinutes());
     }
 
     @Override
@@ -126,7 +127,7 @@ public class Task {
         csvString.append(getStatus()).append(FileConstants.CSV_DELIMITER);
         csvString.append(getDescription()).append(FileConstants.CSV_DELIMITER);
         csvString.append(getStartTime()).append(FileConstants.CSV_DELIMITER);
-        csvString.append(getTaskDuration()).append(FileConstants.CSV_DELIMITER);
+        csvString.append(getTaskDuration().toMinutes()).append(FileConstants.CSV_DELIMITER);
 
         return csvString.toString().replace("null", "");
     }
@@ -142,7 +143,7 @@ public class Task {
         TaskStatus status = TaskStatus.valueOf(parsedLine[3]);
         String description = parsedLine[4];
         LocalDateTime startTime = LocalDateTime.parse(parsedLine[5]);
-        int taskDuration = Integer.parseInt(parsedLine[6]);
+        Duration taskDuration = Duration.ofMinutes(Integer.parseInt(parsedLine[6]));
         return new Task(name, description, status, id, startTime, taskDuration);
     }
 

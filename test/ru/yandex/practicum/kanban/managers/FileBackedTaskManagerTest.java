@@ -12,6 +12,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -25,11 +26,14 @@ class FileBackedTaskManagerTest extends TasksManagerTest<FileBackedTaskManager> 
     public static final Path FILE_PATH = Paths.get(FILE_NAME);
 
     LocalDateTime task1StartDate = LocalDateTime.of(2025, 3, 1, 8, 0);
-    Task task1 = new Task("ru.yandex.practicum.kanban.generics.tasks.Task #1", "Task1 description", TaskStatus.NEW, task1StartDate, 30);
+    Duration task1duration = Duration.ofMinutes(30);
+    Task task1 = new Task("ru.yandex.practicum.kanban.generics.tasks.Task #1", "Task1 description", TaskStatus.NEW, task1StartDate, task1duration);
     LocalDateTime task2StartDate = LocalDateTime.of(2025, 3, 1, 7, 0);
-    Task task2 = new Task("ru.yandex.practicum.kanban.generics.tasks.Task #2", "Task2 description", TaskStatus.NEW, task2StartDate, 30);
+    Duration task2duration = Duration.ofMinutes(30);
+    Task task2 = new Task("ru.yandex.practicum.kanban.generics.tasks.Task #2", "Task2 description", TaskStatus.NEW, task2StartDate, task2duration);
     LocalDateTime task3StartDate = LocalDateTime.of(2025, 3, 3, 7, 0);
-    Task task3 = new Task("ru.yandex.practicum.kanban.generics.tasks.Task #3", "Task3 description", TaskStatus.NEW, task3StartDate, 30);
+    Duration task3duration = Duration.ofMinutes(30);
+    Task task3 = new Task("ru.yandex.practicum.kanban.generics.tasks.Task #3", "Task3 description", TaskStatus.NEW, task3StartDate, task3duration);
 
     @BeforeEach
     void deleteGeneratedFile() throws IOException {
@@ -67,7 +71,9 @@ class FileBackedTaskManagerTest extends TasksManagerTest<FileBackedTaskManager> 
     void saveEmptyFileTest() {
         FileBackedTaskManager taskManager = FileBackedTaskManager.loadFromFile(FILE_PATH.toFile());
         LocalDateTime task1StartDate = LocalDateTime.of(2025, 3, 1, 8, 0);
-        Task task1 = new Task("ru.yandex.practicum.kanban.generics.tasks.Task #1", "Task1 description", TaskStatus.NEW, task1StartDate, 30);
+        Duration task1duration = Duration.ofMinutes(30);
+
+        Task task1 = new Task("ru.yandex.practicum.kanban.generics.tasks.Task #1", "Task1 description", TaskStatus.NEW, task1StartDate, task1duration);
         int taskId1 = taskManager.addNewTask(task1);
         taskManager.deleteTask(taskId1);
         assertTrue(Files.exists(FILE_PATH));

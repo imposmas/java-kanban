@@ -7,6 +7,7 @@ import ru.yandex.practicum.kanban.generics.tasks.SubTask;
 import ru.yandex.practicum.kanban.generics.tasks.Task;
 import ru.yandex.practicum.kanban.utils.ManagersUtils;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -124,7 +125,7 @@ public class InMemoryTaskManager implements TasksManager {
         Task taskNew = new Task(id, task);
         overlapWithExistingTasksCheck(taskNew);
         tasks.put(id, taskNew);
-        prioritizedTasks.add(tasks.get(id));
+        prioritizedTasks.add(taskNew);
         return id;
     }
 
@@ -250,9 +251,9 @@ public class InMemoryTaskManager implements TasksManager {
     }
 
     private void calculateEpicStatus(Epic epic) {
-        List<SubTask> subTasksPerEpic = subTasks.values().stream()
-                .filter(subTask -> subTask.getEpicId() == epic.getId())
-                .toList();
+        List<SubTask> subTasksPerEpic = new ArrayList<>(epic.getSubTasks().stream()
+                .map(subTask -> subTasks.get(subTask)).toList());
+
         if (subTasksPerEpic.isEmpty() || isAllSubTasksNew(subTasksPerEpic)) {
             epics.replace(epic.getId(), new Epic(epic, TaskStatus.NEW));
         } else if (isAllSubTasksDone(subTasksPerEpic)) {
@@ -263,17 +264,16 @@ public class InMemoryTaskManager implements TasksManager {
     }
 
     protected void calculateEpicStartTimeAndDuration(Epic epic) {
-        List<SubTask> subTasksPerEpic = new ArrayList<>(subTasks.values().stream()
-                .filter(subTask -> subTask.getEpicId() == epic.getId())
-                .toList());
+        List<SubTask> subTasksPerEpic = new ArrayList<>(epic.getSubTasks().stream()
+                .map(subTask -> subTasks.get(subTask)).toList());
 
-        int epicDuration = 0;
+        Duration epicDuration = Duration.ofMinutes(0);
         if (!subTasksPerEpic.isEmpty()) {
             subTasksPerEpic.sort(taskComparator);
             LocalDateTime epicStartTime = subTasksPerEpic.getFirst().getStartTime();
 
             for (int i = 0; i < subTasksPerEpic.size(); i++) {
-                epicDuration = epicDuration + subTasksPerEpic.get(i).getTaskDuration();
+                epicDuration = epicDuration.plusMinutes(subTasksPerEpic.get(i).getTaskDuration().toMinutes());
             }
             epics.replace(epic.getId(), new Epic(epic, epicStartTime, epicDuration));
         } else {
