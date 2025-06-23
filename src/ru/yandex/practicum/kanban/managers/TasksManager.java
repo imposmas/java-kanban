@@ -24,6 +24,8 @@ public interface TasksManager {
 
     Epic getEpic(int id);
 
+    HistoryManager getHistoryManager();
+
     int addNewTask(Task task);
 
     int addNewEpic(Epic epic);

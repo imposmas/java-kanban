@@ -3,6 +3,7 @@ package ru.yandex.practicum.kanban.managers;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import ru.yandex.practicum.kanban.constants.TaskStatus;
+import ru.yandex.practicum.kanban.exceptions.NotFoundException;
 import ru.yandex.practicum.kanban.exceptions.OverlapException;
 import ru.yandex.practicum.kanban.generics.tasks.Epic;
 import ru.yandex.practicum.kanban.generics.tasks.SubTask;
@@ -84,7 +85,7 @@ class TasksManagerTest<T extends TasksManager> {
     @Test
     void deleteTaskByIdTest() {
         taskManager.deleteTask(taskId1);
-        assertNull(taskManager.getTask(taskId1));
+        assertThrows(NotFoundException.class, ()-> {taskManager.getTask(taskId1);});
     }
 
     @Test
@@ -96,7 +97,7 @@ class TasksManagerTest<T extends TasksManager> {
     @Test
     void deleteSubtaskByIdTest() {
         taskManager.deleteSubTask(SubTaskId1);
-        assertEquals(null, taskManager.getSubTask(SubTaskId1));
+        assertThrows(NotFoundException.class, ()-> {taskManager.getSubTask(SubTaskId1);});
     }
 
 
@@ -119,9 +120,7 @@ class TasksManagerTest<T extends TasksManager> {
 
     @Test
     void notPossibleToAddEpicToEpicAsSubtask() {
-        taskManager.updateSubTask(new SubTask(taskManager.getSubTask(SubTaskId3), SubTaskId2));
-        SubTask ExpectedSubTask = taskManager.getSubTask(SubTaskId2);
-        assertTrue(ExpectedSubTask.getEpicId() != SubTaskId2);
+        assertThrows(NotFoundException.class, ()-> {taskManager.updateSubTask(new SubTask(taskManager.getSubTask(SubTaskId3), SubTaskId2));});
     }
 
     @Test
@@ -129,8 +128,7 @@ class TasksManagerTest<T extends TasksManager> {
         subTask2StartDate = LocalDateTime.of(2025, 3, 1, 10, 0);
         subTask2duration = Duration.ofMinutes(30);
         SubTask SubTask3 = new SubTask("SubTask #3-1", "SubTask1 description", TaskStatus.NEW, SubTaskId2, subTask2StartDate, subTask2duration);
-        Integer SubtaskId3 = taskManager.addNewSubTask(SubTask3);
-        assertNull(SubtaskId3);
+        assertThrows(NotFoundException.class, ()->{taskManager.addNewSubTask(SubTask3);});
     }
 
     @Test

@@ -1,6 +1,7 @@
 package ru.yandex.practicum.kanban.managers;
 
 import ru.yandex.practicum.kanban.constants.TaskStatus;
+import ru.yandex.practicum.kanban.exceptions.NotFoundException;
 import ru.yandex.practicum.kanban.exceptions.OverlapException;
 import ru.yandex.practicum.kanban.generics.tasks.Epic;
 import ru.yandex.practicum.kanban.generics.tasks.SubTask;
@@ -82,6 +83,8 @@ public class InMemoryTaskManager implements TasksManager {
         Task task = tasks.get(id);
         if (isNotNull(task)) {
             historyManager.addToHistory(task);
+        } else {
+            throw new NotFoundException("Таска не существует");
         }
         return task;
     }
@@ -91,6 +94,8 @@ public class InMemoryTaskManager implements TasksManager {
         SubTask subTask = subTasks.get(id);
         if (isNotNull(subTask)) {
             historyManager.addToHistory(subTask);
+        } else {
+            throw new NotFoundException("Сабтаска не существует");
         }
         return subTask;
     }
@@ -100,6 +105,8 @@ public class InMemoryTaskManager implements TasksManager {
         Epic epic = epics.get(id);
         if (isNotNull(epic)) {
             historyManager.addToHistory(epic);
+        } else {
+            throw new NotFoundException("Эпика не существует");
         }
         return epic;
     }
@@ -261,6 +268,11 @@ public class InMemoryTaskManager implements TasksManager {
         } else {
             epics.replace(epic.getId(), new Epic(epic, TaskStatus.IN_PROGRESS));
         }
+    }
+
+    @Override
+    public HistoryManager getHistoryManager() {
+        return historyManager;
     }
 
     protected void calculateEpicStartTimeAndDuration(Epic epic) {
