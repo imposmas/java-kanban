@@ -231,16 +231,17 @@ class HttpTaskServerTest {
         HttpRequest request = HttpRequest.newBuilder().uri(urlEpic).POST(HttpRequest.BodyPublishers.ofString(epicJson)).build();
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
         assertEquals(201, response.statusCode());
+        int epicId = manager.getEpics().getFirst().getId();
 
         URI urlSubTask = URI.create("http://localhost:8080/subtasks/");
         SubTask subTask1 = new SubTask("ru.yandex.practicum.kanban.generics.tasks.SubTask #1-1", "SubTask1 description",
-                TaskStatus.NEW, 1, LocalDateTime.now(), Duration.ofMinutes(5));
+                TaskStatus.NEW, epicId, LocalDateTime.now(), Duration.ofMinutes(5));
         String subTaskJson1 = gson.toJson(subTask1);
         HttpRequest requestSubtask = HttpRequest.newBuilder().uri(urlSubTask).POST(HttpRequest.BodyPublishers.ofString(subTaskJson1)).build();
         HttpResponse<String> responseSubtask = client.send(requestSubtask, HttpResponse.BodyHandlers.ofString());
 
         SubTask subTask2 = new SubTask("ru.yandex.practicum.kanban.generics.tasks.SubTask #1-1", "SubTask1 description",
-                TaskStatus.NEW, 1, LocalDateTime.now().plusMinutes(10), Duration.ofMinutes(5));
+                TaskStatus.NEW, epicId, LocalDateTime.now().plusMinutes(10), Duration.ofMinutes(5));
         String subTaskJson2 = gson.toJson(subTask2);
         HttpRequest requestSubtask2 = HttpRequest.newBuilder().uri(urlSubTask).POST(HttpRequest.BodyPublishers.ofString(subTaskJson2)).build();
         HttpResponse<String> responseSubtask2 = client.send(requestSubtask2, HttpResponse.BodyHandlers.ofString());
@@ -249,7 +250,7 @@ class HttpTaskServerTest {
         assertEquals(201, responseSubtask2.statusCode());
         assertTrue(manager.getEpicSubTasks(1).size() == 2);
 
-        URI urlEpicSubtasks = URI.create("http://localhost:8080/epics/1/subtasks");
+        URI urlEpicSubtasks = URI.create("http://localhost:8080/epics/" + epicId + "/subtasks");
         HttpRequest requestEpicSubtasks = HttpRequest.newBuilder().uri(urlEpicSubtasks).GET().build();
         HttpResponse<String> responseEpicSubtasks = client.send(requestEpicSubtasks, HttpResponse.BodyHandlers.ofString());
 
