@@ -248,7 +248,7 @@ class HttpTaskServerTest {
 
         assertEquals(201, responseSubtask.statusCode());
         assertEquals(201, responseSubtask2.statusCode());
-        assertTrue(manager.getEpicSubTasks(1).size() == 2);
+        assertTrue(manager.getEpicSubTasks(epicId).size() == 2);
 
         URI urlEpicSubtasks = URI.create("http://localhost:8080/epics/" + epicId + "/subtasks");
         HttpRequest requestEpicSubtasks = HttpRequest.newBuilder().uri(urlEpicSubtasks).GET().build();
