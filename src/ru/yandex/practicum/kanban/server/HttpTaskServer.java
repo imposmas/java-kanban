@@ -39,7 +39,7 @@ public class HttpTaskServer {
         httpServer.start();
     }
 
-    public void stop(){
+    public void stop() {
         httpServer.stop(0);
     }
 }
