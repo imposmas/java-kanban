@@ -15,8 +15,8 @@ import java.util.Optional;
 
 public class BaseHttpHandler {
 
-    protected Gson gson;
-    TasksManager tasksManager;
+    protected final Gson gson;
+    protected final TasksManager tasksManager;
 
     public BaseHttpHandler(TasksManager tasksManager) {
         this.tasksManager = tasksManager;
@@ -35,14 +35,14 @@ public class BaseHttpHandler {
     }
 
     protected void sendCompleted(HttpExchange h) throws IOException {
-        h.getResponseHeaders().add("Content-Type", "application/json;charset=utf-8");
+        h.getResponseHeaders().add("Content-Type", "text/plain");
         h.sendResponseHeaders(201, 0);
         h.close();
     }
 
     protected void sendNotFound(HttpExchange h, String text) throws IOException {
         byte[] resp = text.getBytes(StandardCharsets.UTF_8);
-        h.getResponseHeaders().add("Content-Type", "application/json;charset=utf-8");
+        h.getResponseHeaders().add("Content-Type", "text/plain");
         h.sendResponseHeaders(404, resp.length);
         h.getResponseBody().write(resp);
         h.close();
@@ -50,7 +50,7 @@ public class BaseHttpHandler {
 
     protected void sendHasInteractions(HttpExchange h, String text) throws IOException {
         byte[] resp = text.getBytes(StandardCharsets.UTF_8);
-        h.getResponseHeaders().add("Content-Type", "application/json;charset=utf-8");
+        h.getResponseHeaders().add("Content-Type", "text/plain");
         h.sendResponseHeaders(406, resp.length);
         h.getResponseBody().write(resp);
         h.close();
@@ -59,7 +59,7 @@ public class BaseHttpHandler {
     protected void sendInternalServerError(HttpExchange h) throws IOException {
         String text = "Internal Server Error";
         byte[] resp = text.getBytes(StandardCharsets.UTF_8);
-        h.getResponseHeaders().add("Content-Type", "application/json;charset=utf-8");
+        h.getResponseHeaders().add("Content-Type", "text/plain");
         h.sendResponseHeaders(500, resp.length);
         h.getResponseBody().write(resp);
         h.close();

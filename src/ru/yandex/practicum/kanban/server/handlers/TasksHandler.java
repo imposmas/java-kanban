@@ -33,8 +33,12 @@ public class TasksHandler extends BaseHttpHandler implements HttpHandler {
                 handleGetTask(exchange);
                 break;
             }
-            case CREATE_UPDATE_TASK: {
-                handlePostTask(exchange);
+            case CREATE_TASK: {
+                handlePostCreateTask(exchange);
+                break;
+            }
+            case UPDATE_TASK: {
+                handlePostUpdateTask(exchange);
                 break;
             }
             case DELETE_TASK: {
@@ -55,12 +59,15 @@ public class TasksHandler extends BaseHttpHandler implements HttpHandler {
                 return Endpoint.GET_TASKS;
             }
             if (requestMethod.equals("POST")) {
-                return Endpoint.CREATE_UPDATE_TASK;
+                return Endpoint.CREATE_TASK;
             }
         }
         if (pathParts.length == 3) {
             if (requestMethod.equals("GET")) {
                 return Endpoint.GET_TASK;
+            }
+            if (requestMethod.equals("POST")) {
+                return Endpoint.UPDATE_TASK;
             }
             if (requestMethod.equals("DELETE")) {
                 return Endpoint.DELETE_TASK;
@@ -92,19 +99,27 @@ public class TasksHandler extends BaseHttpHandler implements HttpHandler {
         }
     }
 
-    private void handlePostTask(HttpExchange exchange) throws IOException {
+    private void handlePostUpdateTask(HttpExchange exchange) throws IOException {
         try {
             String body = new String(exchange.getRequestBody().readAllBytes(), StandardCharsets.UTF_8);
             Task task = gson.fromJson(body, new TaskTypeToken().getType());
-            if (task.getId() != 0) {
-                tasksManager.updateTask(task);
-            } else {
+            tasksManager.updateTask(task);
+            sendCompleted(exchange);
+        } catch (IOException e) {
+            sendInternalServerError(exchange);
+        }
+
+    }
+
+    private void handlePostCreateTask(HttpExchange exchange) throws IOException {
+        try {
+            String body = new String(exchange.getRequestBody().readAllBytes(), StandardCharsets.UTF_8);
+            Task task = gson.fromJson(body, new TaskTypeToken().getType());
                 try {
                     tasksManager.addNewTask(task);
                 } catch (OverlapException e) {
                     sendHasInteractions(exchange, e.getMessage());
                 }
-            }
             sendCompleted(exchange);
         } catch (IOException e) {
             sendInternalServerError(exchange);
@@ -128,5 +143,5 @@ public class TasksHandler extends BaseHttpHandler implements HttpHandler {
         }
     }
 
-    enum Endpoint { GET_TASKS, GET_TASK, CREATE_UPDATE_TASK, DELETE_TASK, UNKNOWN }
+    enum Endpoint { GET_TASKS, GET_TASK, CREATE_UPDATE_TASK, DELETE_TASK,CREATE_TASK, UPDATE_TASK, UNKNOWN }
 }

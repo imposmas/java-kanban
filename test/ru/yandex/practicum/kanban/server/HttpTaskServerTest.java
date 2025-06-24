@@ -93,7 +93,8 @@ class HttpTaskServerTest {
         Task updatedTask = new Task(TaskStatus.DONE, manager.getTask(taskId));
         String updatedTaskJson = gson.toJson(updatedTask);
 
-        HttpRequest requestToUpdate = HttpRequest.newBuilder().uri(url).POST(HttpRequest.BodyPublishers.ofString(updatedTaskJson)).build();
+        URI urlUpdate = URI.create("http://localhost:8080/tasks/" + taskId);
+        HttpRequest requestToUpdate = HttpRequest.newBuilder().uri(urlUpdate).POST(HttpRequest.BodyPublishers.ofString(updatedTaskJson)).build();
         HttpResponse<String> responseToUpdate = client.send(requestToUpdate, HttpResponse.BodyHandlers.ofString());
         assertEquals(201, responseToUpdate.statusCode());
 
