@@ -115,11 +115,11 @@ public class TasksHandler extends BaseHttpHandler implements HttpHandler {
         try {
             String body = new String(exchange.getRequestBody().readAllBytes(), StandardCharsets.UTF_8);
             Task task = gson.fromJson(body, new TaskTypeToken().getType());
-                try {
-                    tasksManager.addNewTask(task);
-                } catch (OverlapException e) {
-                    sendHasInteractions(exchange, e.getMessage());
-                }
+            try {
+                tasksManager.addNewTask(task);
+            } catch (OverlapException e) {
+                sendHasInteractions(exchange, e.getMessage());
+            }
             sendCompleted(exchange);
         } catch (IOException e) {
             sendInternalServerError(exchange);
@@ -143,5 +143,5 @@ public class TasksHandler extends BaseHttpHandler implements HttpHandler {
         }
     }
 
-    enum Endpoint { GET_TASKS, GET_TASK, DELETE_TASK,CREATE_TASK, UPDATE_TASK, UNKNOWN }
+    enum Endpoint { GET_TASKS, GET_TASK, DELETE_TASK, CREATE_TASK, UPDATE_TASK, UNKNOWN }
 }
